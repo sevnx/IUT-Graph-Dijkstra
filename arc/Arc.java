@@ -7,12 +7,12 @@ package arc;
  */
 public class Arc {
     public static final String EMPTY_EDGE="";
-    private String origin;
-    private String destination;
-    private int valuation;
+    private final String origin;
+    private final String destination;
+    private final int valuation;
 
     public Arc(String origin, String destination, int valuation) {
-        if (isValuationNegative(valuation))
+        if (valuation < 0)
             throw new IllegalArgumentException("Valuation ne peut pas être négative");
         if (origin == null)
             throw new IllegalArgumentException("Source ne peut pas être null");
@@ -23,10 +23,6 @@ public class Arc {
 
     public Arc(String source) {
         this(source, "", 0);
-    }
-
-    public static boolean isValuationNegative(int valuation) {
-        return valuation < 0;
     }
 
     public String getOrigin() {

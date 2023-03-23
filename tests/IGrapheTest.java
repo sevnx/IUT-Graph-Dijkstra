@@ -4,7 +4,9 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.List;
 
+import graphe.GrapheLAdj;
 import graphe.GrapheLArcs;
+import graphe.GrapheMAdj;
 import graphe.IGraphe;
 import org.junit.jupiter.api.Test;
 
@@ -25,8 +27,12 @@ class IGrapheTest {
 
 	@Test
 	void exo3_1Maths() {
-		GrapheLArcs gla = new GrapheLArcs(g31);
-		tester3_1(gla);
+		GrapheLArcs glarc = new GrapheLArcs(g31);
+		GrapheMAdj gmadj = new GrapheMAdj(g31);
+		GrapheLAdj gladj = new GrapheLAdj(g31);
+		tester3_1(glarc);
+		tester3_1(gmadj);
+		tester3_1(gladj);
 	}
 
 	void tester3_1(IGraphe g) {

@@ -13,7 +13,7 @@ import java.util.Objects;
  */
 public class GrapheLArcs implements IGraphe {
     private static final String EMPTY_EDGE = "";
-    private List<Arc> arcs;
+    private final List<Arc> arcs;
 
     public GrapheLArcs() {
         arcs = new ArrayList<>();
@@ -33,8 +33,6 @@ public class GrapheLArcs implements IGraphe {
     public void ajouterArc(String source, String destination, Integer valeur) {
         if (contientArc(source,EMPTY_EDGE))
             oterArc(source,EMPTY_EDGE);
-        if (contientArc(destination,EMPTY_EDGE))
-            oterArc(destination,EMPTY_EDGE);
         arcs.add(new Arc(source, destination, valeur));
     }
 
@@ -105,12 +103,12 @@ public class GrapheLArcs implements IGraphe {
     @Override
     public String toString(){
         StringBuilder sb = new StringBuilder();
-        boolean first = false;
+        boolean first = true;
         for (Arc arc : arcs){
-            if (first)
+            if (!first)
                 sb.append(", ");
             else
-                first=true;
+                first=false;
             sb.append(arc);
         }
         return sb.toString();
