@@ -7,12 +7,13 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
+import static arc.Arc.EMPTY_EDGE;
+
 /**
  * Representation of a graph with a list of arcs.
  * @author Seweryn CZYKINOWSKI
  */
 public class GrapheLArcs implements IGraphe {
-    private static final String EMPTY_EDGE = "";
     private final List<Arc> arcs;
 
     public GrapheLArcs() {
@@ -58,9 +59,9 @@ public class GrapheLArcs implements IGraphe {
     public List<String> getSommets() {
         List<String> nodes = new ArrayList<>();
         for (Arc arc : arcs) {
-            if (!nodes.contains(arc.getOrigin()) && !arc.getOrigin().equals(Arc.EMPTY_EDGE))
+            if (!nodes.contains(arc.getOrigin()) && !arc.getOrigin().equals(EMPTY_EDGE))
                 nodes.add(arc.getOrigin());
-            if (!nodes.contains(arc.getDestination()) && !arc.getDestination().equals(Arc.EMPTY_EDGE))
+            if (!nodes.contains(arc.getDestination()) && !arc.getDestination().equals(EMPTY_EDGE))
                 nodes.add(arc.getDestination());
         }
         Collections.sort(nodes);
@@ -71,7 +72,7 @@ public class GrapheLArcs implements IGraphe {
     public List<String> getSucc(String sommet) {
         List<String> succ = new ArrayList<>();
         for (Arc arc : arcs)
-            if (Objects.equals(arc.getOrigin(), sommet) && !Objects.equals(arc.getDestination(), Arc.EMPTY_EDGE))
+            if (Objects.equals(arc.getOrigin(), sommet) && !Objects.equals(arc.getDestination(), EMPTY_EDGE))
                 succ.add(arc.getDestination());
         return succ;
     }

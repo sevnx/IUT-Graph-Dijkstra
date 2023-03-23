@@ -4,8 +4,9 @@ import arc.Arc;
 
 import java.util.*;
 
+import static arc.Arc.EMPTY_EDGE;
+
 public class GrapheLAdj implements IGraphe {
-    private static final String EMPTY_EDGE = "";
     private final Map<String, List<Arc>> ladj;
 
     public GrapheLAdj() {
