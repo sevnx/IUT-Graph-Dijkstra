@@ -1,9 +1,13 @@
-package graphe;
+package graphe.types;
 
-import arc.Arc;
+import graphe.arc.Arc;
+import graphe.IGraphe;
 
 import java.util.*;
 
+/**
+ * Representation of a graph with a hash map of hash maps.
+ */
 public class GrapheHHadj implements IGraphe {
     /**
      * Adjacency list : map that matches a node name to a map
@@ -98,6 +102,6 @@ public class GrapheHHadj implements IGraphe {
             }
 
         }
-        return GrapheNoArc_StringGetter.getStringFromStringArcList(arcs);
+        return ArcListStringConverter.convertToString(arcs);
     }
 }

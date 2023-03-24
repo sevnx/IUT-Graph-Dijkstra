@@ -5,6 +5,10 @@ import static org.junit.jupiter.api.Assertions.*;
 import java.util.List;
 
 import graphe.*;
+import graphe.types.GrapheHHadj;
+import graphe.types.GrapheLAdj;
+import graphe.types.GrapheLArcs;
+import graphe.types.GrapheMAdj;
 import org.junit.jupiter.api.Test;
 
 class IGrapheTest {

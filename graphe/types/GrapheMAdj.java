@@ -1,4 +1,6 @@
-package graphe;
+package graphe.types;
+
+import graphe.IGraphe;
 
 import java.util.*;
 
@@ -150,6 +152,6 @@ public class GrapheMAdj implements IGraphe {
                 }
             }
         }
-        return GrapheNoArc_StringGetter.getStringFromStringArcList(arcs);
+        return ArcListStringConverter.convertToString(arcs);
     }
 }

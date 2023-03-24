@@ -1,10 +1,11 @@
-package graphe;
+package graphe.types;
 
-import arc.Arc;
+import graphe.arc.Arc;
+import graphe.IGraphe;
 
 import java.util.*;
 
-import static arc.Arc.EMPTY_EDGE;
+import static graphe.arc.Arc.EMPTY_EDGE;
 
 /**
  * Representation of a graph with an adjacency list.
@@ -13,7 +14,7 @@ import static arc.Arc.EMPTY_EDGE;
 public class GrapheLAdj implements IGraphe {
     /**
      * Adjacency list : map that matches a node name to the list of their outgoing arcs.
-     * @see arc.Arc
+     * @see graphe.arc.Arc
      */
     private final Map<String, List<Arc>> ladj;
 
@@ -111,16 +112,10 @@ public class GrapheLAdj implements IGraphe {
 
     @Override
     public String toString(){
-        StringBuilder sb = new StringBuilder();
-        boolean first = true;
+        List<String> arcsString = new ArrayList<>();
         for (List<Arc> arcs : ladj.values())
-            for (Arc arc : arcs){
-                if (!first)
-                    sb.append(", ");
-                else
-                    first=false;
-                sb.append(arc);
-            }
-        return sb.toString();
+            for (Arc arc : arcs)
+                arcsString.add(arc.toString());
+        return ArcListStringConverter.convertToString(arcsString);
     }
 }

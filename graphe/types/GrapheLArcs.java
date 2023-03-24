@@ -1,13 +1,14 @@
-package graphe;
+package graphe.types;
 
-import arc.Arc;
+import graphe.arc.Arc;
+import graphe.IGraphe;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
-import static arc.Arc.EMPTY_EDGE;
+import static graphe.arc.Arc.EMPTY_EDGE;
 
 /**
  * Representation of a graph with a list of arcs.
@@ -15,7 +16,7 @@ import static arc.Arc.EMPTY_EDGE;
  */
 public class GrapheLArcs implements IGraphe {
     /** List of arcs
-     * @see arc.Arc
+     * @see graphe.arc.Arc
      */
     private final List<Arc> arcs;
 
@@ -116,15 +117,9 @@ public class GrapheLArcs implements IGraphe {
 
     @Override
     public String toString(){
-        StringBuilder sb = new StringBuilder();
-        boolean first = true;
-        for (Arc arc : arcs){
-            if (!first)
-                sb.append(", ");
-            else
-                first=false;
-            sb.append(arc);
-        }
-        return sb.toString();
+        List<String> arcsString = new ArrayList<>();
+        for (Arc arc : arcs)
+            arcsString.add(arc.toString());
+        return ArcListStringConverter.convertToString(arcsString);
     }
 }

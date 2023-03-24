@@ -1,7 +1,7 @@
-package arc;
+package graphe.arc;
 
 /**
- * Un arc est un couple (source, destination) avec une valuation.
+ * Un graphe.arc est un couple (source, destination) avec une valuation.
  * La valuation est un entier positif.
  * @author Seweryn CZYKINOWSKI
  */

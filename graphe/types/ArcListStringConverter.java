@@ -1,13 +1,18 @@
-package graphe;
+package graphe.types;
 
 import java.util.Collections;
 import java.util.List;
 
 /**
- * Utility class for building a string representation of a graph for graphs that do not use the Arc class.
+ * Converts a list of string representing arcs to a string.
  */
-public class GrapheNoArc_StringGetter {
-    static String getStringFromStringArcList(List<String> arcs) {
+abstract class ArcListStringConverter {
+    /**
+     * Converts a list of string representing arcs to a string.
+     * @param arcs the list of string representing arcs
+     * @return the string representation of the list of arcs
+     */
+    static String convertToString(List<String> arcs) {
         StringBuilder sb = new StringBuilder();
         Collections.sort(arcs);
         boolean first = true;
