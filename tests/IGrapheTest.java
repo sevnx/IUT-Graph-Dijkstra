@@ -4,10 +4,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.List;
 
-import graphe.GrapheLAdj;
-import graphe.GrapheLArcs;
-import graphe.GrapheMAdj;
-import graphe.IGraphe;
+import graphe.*;
 import org.junit.jupiter.api.Test;
 
 class IGrapheTest {
@@ -26,13 +23,27 @@ class IGrapheTest {
 			+ "J:";
 
 	@Test
-	void exo3_1Maths() {
+	void exo3_1Maths_LArcs() {
 		GrapheLArcs glarc = new GrapheLArcs(g31);
-		GrapheMAdj gmadj = new GrapheMAdj(g31);
-		GrapheLAdj gladj = new GrapheLAdj(g31);
 		tester3_1(glarc);
+	}
+
+	@Test
+	void exo3_1Maths_MAdj() {
+		GrapheMAdj gmadj = new GrapheMAdj(g31);
 		tester3_1(gmadj);
+	}
+
+	@Test
+	void exo3_1Maths_LAdj() {
+		GrapheLAdj gladj = new GrapheLAdj(g31);
 		tester3_1(gladj);
+	}
+
+	@Test
+	void exo3_1Maths_HHadj() {
+		GrapheHHadj ghhadj = new GrapheHHadj(g31);
+		tester3_1(ghhadj);
 	}
 
 	void tester3_1(IGraphe g) {

@@ -6,13 +6,30 @@ import java.util.*;
 
 import static arc.Arc.EMPTY_EDGE;
 
+/**
+ * Representation of a graph with an adjacency list.
+ * @see graphe.IGraphe
+ */
 public class GrapheLAdj implements IGraphe {
+    /**
+     * Adjacency list : map that matches a node name to the list of their outgoing arcs.
+     * @see arc.Arc
+     */
     private final Map<String, List<Arc>> ladj;
 
+    /**
+     * Default constructor of the class.
+     * Creates an empty graph.
+     */
     public GrapheLAdj() {
         ladj = new HashMap<>();
     }
 
+    /**
+     * Creates a graph from a string representation.
+     * @param str the string representation of the graph
+     * @see graphe.IGraphe#peupler(String)
+     */
     public GrapheLAdj(String str) {
         this();
         peupler(str);
@@ -57,7 +74,9 @@ public class GrapheLAdj implements IGraphe {
 
     @Override
     public List<String> getSommets() {
-        return new ArrayList<>(ladj.keySet());
+        List<String> sommets =  new ArrayList<>(ladj.keySet());
+        Collections.sort(sommets);
+        return sommets;
     }
 
     @Override

@@ -11,15 +11,27 @@ import static arc.Arc.EMPTY_EDGE;
 
 /**
  * Representation of a graph with a list of arcs.
- * @author Seweryn CZYKINOWSKI
+ * @see graphe.IGraphe
  */
 public class GrapheLArcs implements IGraphe {
+    /** List of arcs
+     * @see arc.Arc
+     */
     private final List<Arc> arcs;
 
+    /**
+     * Default constructor of the class.
+     * Creates an empty graph.
+     */
     public GrapheLArcs() {
         arcs = new ArrayList<>();
     }
 
+    /**
+     * Creates a graph from a string representation.
+     * @param str the string representation of the graph
+     * @see graphe.IGraphe#peupler(String)
+     */
     public GrapheLArcs(String str){
         this();
         peupler(str);
@@ -74,6 +86,7 @@ public class GrapheLArcs implements IGraphe {
         for (Arc arc : arcs)
             if (Objects.equals(arc.getOrigin(), sommet) && !Objects.equals(arc.getDestination(), EMPTY_EDGE))
                 succ.add(arc.getDestination());
+        Collections.sort(succ);
         return succ;
     }
 

@@ -4,24 +4,34 @@ import java.util.*;
 
 /**
  * Represents a graph with an adjacency matrix.
+ * @see graphe.IGraphe
  */
 public class GrapheMAdj implements IGraphe {
-    private static final String EMPTY_EDGE = "";
-    private static final int SELF_EDGE = 0;
+    /** Value of the self edge of an empty node, that signifies that the node doesn't have an outgoing edge. */
+    private static final int EMPTY_NODE_SELF_EDGE = 0;
+    /** Value which indicates that there is no edge between two nodes. */
     private static final int NO_EDGE = -1;
+    /** Adjacency matrix representation of the graph. */
     private int[][] matrice;
+    /** Map of the indexes of the nodes in the adjacency matrix, matches a name to an index */
     private final Map<String, Integer> indices;
 
+    /**
+     * Utility method to get the key from a value in a map.
+     * @param value the value to search for
+     * @return the key associated with the value, or null if the value is not found
+     */
     private String getKeyFromValue(int value){
         for (Map.Entry<String, Integer> entry : indices.entrySet()) {
             if (entry.getValue().equals(value)) {
                 return entry.getKey();
             }
         }
-        return null;
+        throw new IllegalArgumentException("Value does not exist in the map.");
     }
 
     /**
+     * Default constructor of the class.
      * Creates an empty graph.
      */
     public GrapheMAdj() {
@@ -32,6 +42,7 @@ public class GrapheMAdj implements IGraphe {
     /**
      * Creates a graph from a string representation.
      * @param str the string representation of the graph
+     * @see graphe.IGraphe#peupler(String)
      */
     public GrapheMAdj(String str) {
         this();
@@ -43,7 +54,6 @@ public class GrapheMAdj implements IGraphe {
         if (!contientSommet(noeud)) {
             indices.put(noeud, matrice.length);
             int newSize = matrice.length + 1;
-            // Add a new row and a new column, and fill them with NO_EDGE, and keep the old values.
             int[][] newMatrice = new int[newSize][newSize];
             for (int i = 0; i < newSize; i++) {
                 for (int j = 0; j < newSize; j++) {
@@ -53,7 +63,7 @@ public class GrapheMAdj implements IGraphe {
                         newMatrice[i][j] = NO_EDGE;
                 }
             }
-            newMatrice[newSize - 1][newSize - 1] = SELF_EDGE;
+            newMatrice[newSize - 1][newSize - 1] = EMPTY_NODE_SELF_EDGE;
             matrice = newMatrice;
         }
     }
@@ -62,8 +72,6 @@ public class GrapheMAdj implements IGraphe {
     public void ajouterArc(String source, String destination, Integer valeur) {
         if (!contientSommet(destination))
             ajouterSommet(destination);
-        if (Objects.equals(destination, EMPTY_EDGE))
-            destination=source;
         if (contientArc(source, source))
             oterArc(source, source);
         matrice[indices.get(source)][indices.get(destination)] = valeur;
@@ -73,7 +81,6 @@ public class GrapheMAdj implements IGraphe {
     public void oterSommet(String noeud) {
         int index = indices.get(noeud);
         int newSize = matrice.length - 1;
-        // Remove the row and the column, and keep the old values.
         int[][] newMatrice = new int[newSize][newSize];
         for (int i = 0; i < newSize; i++) {
             for (int j = 0; j < newSize; j++) {
@@ -101,6 +108,7 @@ public class GrapheMAdj implements IGraphe {
         if (indices == null)
             return sommets;
         sommets.addAll(indices.keySet());
+        Collections.sort(sommets);
         return sommets;
     }
 
@@ -131,7 +139,6 @@ public class GrapheMAdj implements IGraphe {
     }
 
     public String toString(){
-        StringBuilder str = new StringBuilder();
         List<String> arcs = new ArrayList<>();
         for (int i = 0; i < indices.size(); i++) {
             for (int j = 0; j < indices.size(); j++) {
@@ -143,15 +150,6 @@ public class GrapheMAdj implements IGraphe {
                 }
             }
         }
-        Collections.sort(arcs);
-        boolean first = true;
-        for (String arc : arcs) {
-            if (first) {
-                str.append(arc);
-                first = false;
-            } else
-                str.append(", ").append(arc);
-        }
-        return str.toString();
+        return GrapheNoArc_StringGetter.getStringFromStringArcList(arcs);
     }
 }
