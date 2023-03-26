@@ -6,24 +6,34 @@ import java.util.*;
 
 /**
  * Represents a graph with an adjacency matrix.
+ *
  * @see graphe.IGraphe
  */
 public class GrapheMAdj implements IGraphe {
-    /** Value of the self edge of an empty node, that signifies that the node doesn't have an outgoing edge. */
+    /**
+     * Value of the self edge of an empty node, that signifies that the node doesn't have an outgoing edge.
+     */
     private static final int EMPTY_NODE_SELF_EDGE = 0;
-    /** Value which indicates that there is no edge between two nodes. */
+    /**
+     * Value which indicates that there is no edge between two nodes.
+     */
     private static final int NO_EDGE = -1;
-    /** Adjacency matrix representation of the graph. */
+    /**
+     * Adjacency matrix representation of the graph.
+     */
     private int[][] matrice;
-    /** Map of the indexes of the nodes in the adjacency matrix, matches a name to an index */
+    /**
+     * Map of the indexes of the nodes in the adjacency matrix, matches a name to an index
+     */
     private final Map<String, Integer> indices;
 
     /**
      * Utility method to get the key from a value in a map.
+     *
      * @param value the value to search for
      * @return the key associated with the value, or null if the value is not found
      */
-    private String getKeyFromValue(int value){
+    private String getKeyFromValue(int value) {
         for (Map.Entry<String, Integer> entry : indices.entrySet()) {
             if (entry.getValue().equals(value)) {
                 return entry.getKey();
@@ -43,6 +53,7 @@ public class GrapheMAdj implements IGraphe {
 
     /**
      * Creates a graph from a string representation.
+     *
      * @param str the string representation of the graph
      * @see graphe.IGraphe#peupler(String)
      */
@@ -72,15 +83,18 @@ public class GrapheMAdj implements IGraphe {
 
     @Override
     public void ajouterArc(String source, String destination, Integer valeur) {
-        if (!contientSommet(destination))
-            ajouterSommet(destination);
-        if (contientArc(source, source))
-            oterArc(source, source);
+        if (!contientSommet(source)) ajouterSommet(source);
+        if (!contientSommet(destination)) ajouterSommet(destination);
+        if (contientArc(source, source)) oterArc(source, source);
+        if (contientArc(source, destination)) throw new IllegalArgumentException("Arc existant.");
+        if (valeur < 0) throw new IllegalArgumentException("Valeur négative.");
         matrice[indices.get(source)][indices.get(destination)] = valeur;
     }
 
     @Override
     public void oterSommet(String noeud) {
+        if (!contientSommet(noeud))
+            return;
         int index = indices.get(noeud);
         int newSize = matrice.length - 1;
         int[][] newMatrice = new int[newSize][newSize];
@@ -101,6 +115,8 @@ public class GrapheMAdj implements IGraphe {
 
     @Override
     public void oterArc(String source, String destination) {
+        if (!contientArc(source, destination))
+            throw new IllegalArgumentException("Arc inexistant.");
         matrice[indices.get(source)][indices.get(destination)] = NO_EDGE;
     }
 
@@ -118,8 +134,8 @@ public class GrapheMAdj implements IGraphe {
     public List<String> getSucc(String sommet) {
         List<String> succ = new ArrayList<>();
         Integer index = indices.get(sommet);
-        for (int i=0;i<matrice.length;++i)
-            if (matrice[index][i]!=NO_EDGE)
+        for (int i = 0; i < matrice.length; ++i)
+            if (matrice[index][i] != NO_EDGE)
                 succ.add(getKeyFromValue(i));
         Collections.sort(succ);
         return succ;
@@ -137,18 +153,20 @@ public class GrapheMAdj implements IGraphe {
 
     @Override
     public boolean contientArc(String src, String dest) {
+        if (!contientSommet(src) || !contientSommet(dest))
+            return false;
         return matrice[indices.get(src)][indices.get(dest)] != NO_EDGE;
     }
 
-    public String toString(){
+    public String toString() {
         List<String> arcs = new ArrayList<>();
         for (int i = 0; i < indices.size(); i++) {
             for (int j = 0; j < indices.size(); j++) {
                 if (matrice[i][j] != NO_EDGE) {
                     if (matrice[i][j] == 0)
-                        arcs.add(getKeyFromValue(i)+":");
+                        arcs.add(getKeyFromValue(i) + ":");
                     else
-                        arcs.add(getKeyFromValue(i)+"-"+getKeyFromValue(j)+"("+matrice[i][j]+")");
+                        arcs.add(getKeyFromValue(i) + "-" + getKeyFromValue(j) + "(" + matrice[i][j] + ")");
                 }
             }
         }

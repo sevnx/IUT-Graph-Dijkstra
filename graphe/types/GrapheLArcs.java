@@ -1,7 +1,7 @@
 package graphe.types;
 
-import graphe.arc.Arc;
 import graphe.IGraphe;
+import graphe.arc.Arc;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -12,10 +12,13 @@ import static graphe.arc.Arc.EMPTY_EDGE;
 
 /**
  * Representation of a graph with a list of arcs.
+ *
  * @see graphe.IGraphe
  */
 public class GrapheLArcs implements IGraphe {
-    /** List of arcs
+    /**
+     * List of arcs
+     *
      * @see graphe.arc.Arc
      */
     private final List<Arc> arcs;
@@ -30,30 +33,34 @@ public class GrapheLArcs implements IGraphe {
 
     /**
      * Creates a graph from a string representation.
+     *
      * @param str the string representation of the graph
      * @see graphe.IGraphe#peupler(String)
      */
-    public GrapheLArcs(String str){
+    public GrapheLArcs(String str) {
         this();
         peupler(str);
     }
 
     @Override
     public void ajouterSommet(String noeud) {
-        arcs.add(new Arc(noeud));
+        if (!contientSommet(noeud))
+            arcs.add(new Arc(noeud));
     }
 
     @Override
     public void ajouterArc(String source, String destination, Integer valeur) {
-        if (contientArc(source,EMPTY_EDGE))
-            oterArc(source,EMPTY_EDGE);
+        if (contientArc(source, destination))
+            throw new IllegalArgumentException("Arc existant.");
+        if (contientArc(source, EMPTY_EDGE))
+            oterArc(source, EMPTY_EDGE);
         arcs.add(new Arc(source, destination, valeur));
     }
 
     @Override
     public void oterSommet(String noeud) {
         for (Arc arc : arcs)
-            if (arc.getOrigin().equals(noeud) || arc.getDestination().equals(noeud)) {
+            if (arc.getSource().equals(noeud) || arc.getDestination().equals(noeud)) {
                 arcs.remove(arc);
                 break;
             }
@@ -61,19 +68,23 @@ public class GrapheLArcs implements IGraphe {
 
     @Override
     public void oterArc(String source, String destination) {
+        boolean found = false;
         for (Arc arc : arcs)
-            if (arc.getOrigin().equals(source) && arc.getDestination().equals(destination)) {
+            if (arc.getSource().equals(source) && arc.getDestination().equals(destination)) {
                 arcs.remove(arc);
+                found = true;
                 break;
             }
+        if (!found)
+            throw new IllegalArgumentException("Arc inexistant");
     }
 
     @Override
     public List<String> getSommets() {
         List<String> nodes = new ArrayList<>();
         for (Arc arc : arcs) {
-            if (!nodes.contains(arc.getOrigin()) && !arc.getOrigin().equals(EMPTY_EDGE))
-                nodes.add(arc.getOrigin());
+            if (!nodes.contains(arc.getSource()) && !arc.getSource().equals(EMPTY_EDGE))
+                nodes.add(arc.getSource());
             if (!nodes.contains(arc.getDestination()) && !arc.getDestination().equals(EMPTY_EDGE))
                 nodes.add(arc.getDestination());
         }
@@ -85,7 +96,7 @@ public class GrapheLArcs implements IGraphe {
     public List<String> getSucc(String sommet) {
         List<String> succ = new ArrayList<>();
         for (Arc arc : arcs)
-            if (Objects.equals(arc.getOrigin(), sommet) && !Objects.equals(arc.getDestination(), EMPTY_EDGE))
+            if (Objects.equals(arc.getSource(), sommet) && !Objects.equals(arc.getDestination(), EMPTY_EDGE))
                 succ.add(arc.getDestination());
         Collections.sort(succ);
         return succ;
@@ -94,7 +105,7 @@ public class GrapheLArcs implements IGraphe {
     @Override
     public int getValuation(String src, String dest) {
         for (Arc arc : arcs)
-            if (arc.getOrigin().equals(src) && arc.getDestination().equals(dest))
+            if (arc.getSource().equals(src) && arc.getDestination().equals(dest))
                 return arc.getValuation();
         throw new IllegalArgumentException();
     }
@@ -102,7 +113,7 @@ public class GrapheLArcs implements IGraphe {
     @Override
     public boolean contientSommet(String sommet) {
         for (Arc arc : arcs)
-            if (Objects.equals(arc.getOrigin(), sommet) || Objects.equals(arc.getDestination(), sommet))
+            if (Objects.equals(arc.getSource(), sommet) || Objects.equals(arc.getDestination(), sommet))
                 return true;
         return false;
     }
@@ -110,16 +121,17 @@ public class GrapheLArcs implements IGraphe {
     @Override
     public boolean contientArc(String src, String dest) {
         for (Arc arc : arcs)
-            if (arc.getOrigin().equals(src) && arc.getDestination().equals(dest))
+            if (arc.getSource().equals(src) && arc.getDestination().equals(dest))
                 return true;
         return false;
     }
 
     @Override
-    public String toString(){
+    public String toString() {
         List<String> arcsString = new ArrayList<>();
-        for (Arc arc : arcs)
+        for (Arc arc : arcs) {
             arcsString.add(arc.toString());
+        }
         return ArcListStringConverter.convertToString(arcsString);
     }
 }

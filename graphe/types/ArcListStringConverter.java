@@ -9,6 +9,7 @@ import java.util.List;
 abstract class ArcListStringConverter {
     /**
      * Converts a list of string representing arcs to a string.
+     *
      * @param arcs the list of string representing arcs
      * @return the string representation of the list of arcs
      */

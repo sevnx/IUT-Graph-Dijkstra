@@ -1,7 +1,7 @@
 package graphe.types;
 
-import graphe.arc.Arc;
 import graphe.IGraphe;
+import graphe.arc.Arc;
 
 import java.util.*;
 
@@ -36,7 +36,7 @@ public class GrapheHHadj implements IGraphe {
 
     @Override
     public void ajouterSommet(String noeud) {
-        if (!hhadj.containsKey(noeud)) {
+        if (!contientSommet(noeud)) {
             hhadj.put(noeud, new HashMap<>());
             hhadj.get(noeud).put(Arc.EMPTY_EDGE, 0);
         }
@@ -46,6 +46,10 @@ public class GrapheHHadj implements IGraphe {
     public void ajouterArc(String source, String destination, Integer valeur) {
         if (contientArc(source, Arc.EMPTY_EDGE))
             oterArc(source, Arc.EMPTY_EDGE);
+        if (contientArc(source, destination))
+            throw new IllegalArgumentException("Arc existant.");
+        if (valeur < 0)
+            throw new IllegalArgumentException("Valeur négative.");
         hhadj.get(source).put(destination, valeur);
     }
 
@@ -58,7 +62,10 @@ public class GrapheHHadj implements IGraphe {
 
     @Override
     public void oterArc(String source, String destination) {
-        hhadj.get(source).remove(destination);
+        if (contientArc(source, destination))
+            hhadj.get(source).remove(destination);
+        else
+            throw new IllegalArgumentException("Arc inexistant");
     }
 
     @Override
@@ -87,14 +94,16 @@ public class GrapheHHadj implements IGraphe {
 
     @Override
     public boolean contientArc(String src, String dest) {
-        return hhadj.get(src).containsKey(dest);
+        if (hhadj.containsKey(src))
+            return hhadj.get(src).containsKey(dest);
+        return false;
     }
 
     @Override
     public String toString() {
         List<String> arcs = new ArrayList<>();
         for (String sommet : getSommets()) {
-            for (String succ : hhadj.get(sommet).keySet()){
+            for (String succ : hhadj.get(sommet).keySet()) {
                 if (succ.equals(Arc.EMPTY_EDGE))
                     arcs.add(sommet + ":");
                 else

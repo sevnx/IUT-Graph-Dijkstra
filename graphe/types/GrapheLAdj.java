@@ -1,7 +1,7 @@
 package graphe.types;
 
-import graphe.arc.Arc;
 import graphe.IGraphe;
+import graphe.arc.Arc;
 
 import java.util.*;
 
@@ -9,11 +9,13 @@ import static graphe.arc.Arc.EMPTY_EDGE;
 
 /**
  * Representation of a graph with an adjacency list.
+ *
  * @see graphe.IGraphe
  */
 public class GrapheLAdj implements IGraphe {
     /**
      * Adjacency list : map that matches a node name to the list of their outgoing arcs.
+     *
      * @see graphe.arc.Arc
      */
     private final Map<String, List<Arc>> ladj;
@@ -28,6 +30,7 @@ public class GrapheLAdj implements IGraphe {
 
     /**
      * Creates a graph from a string representation.
+     *
      * @param str the string representation of the graph
      * @see graphe.IGraphe#peupler(String)
      */
@@ -38,7 +41,7 @@ public class GrapheLAdj implements IGraphe {
 
     @Override
     public void ajouterSommet(String noeud) {
-        if (!ladj.containsKey(noeud)){
+        if (!ladj.containsKey(noeud)) {
             ladj.put(noeud, new ArrayList<>());
             ladj.get(noeud).add(new Arc(noeud));
         }
@@ -46,10 +49,14 @@ public class GrapheLAdj implements IGraphe {
 
     @Override
     public void ajouterArc(String source, String destination, Integer valeur) {
+        if (!ladj.containsKey(source))
+            ajouterSommet(source);
         if (!ladj.containsKey(destination))
             ajouterSommet(destination);
-        if (contientArc(source,EMPTY_EDGE))
-            oterArc(source,EMPTY_EDGE);
+        if (contientArc(source, EMPTY_EDGE))
+            oterArc(source, EMPTY_EDGE);
+        if (contientArc(source, destination))
+            throw new IllegalArgumentException("Arc existant.");
         ladj.get(source).add(new Arc(source, destination, valeur));
     }
 
@@ -66,6 +73,8 @@ public class GrapheLAdj implements IGraphe {
 
     @Override
     public void oterArc(String source, String destination) {
+        if (!contientArc(source, destination))
+            throw new IllegalArgumentException("Arc inexistant.");
         for (Arc arc : ladj.get(source))
             if (arc.getDestination().equals(destination)) {
                 ladj.get(source).remove(arc);
@@ -75,7 +84,7 @@ public class GrapheLAdj implements IGraphe {
 
     @Override
     public List<String> getSommets() {
-        List<String> sommets =  new ArrayList<>(ladj.keySet());
+        List<String> sommets = new ArrayList<>(ladj.keySet());
         Collections.sort(sommets);
         return sommets;
     }
@@ -104,6 +113,8 @@ public class GrapheLAdj implements IGraphe {
 
     @Override
     public boolean contientArc(String src, String dest) {
+        if (!contientSommet(src))
+            return false;
         for (Arc arc : ladj.get(src))
             if (arc.getDestination().equals(dest))
                 return true;
@@ -111,7 +122,7 @@ public class GrapheLAdj implements IGraphe {
     }
 
     @Override
-    public String toString(){
+    public String toString() {
         List<String> arcsString = new ArrayList<>();
         for (List<Arc> arcs : ladj.values())
             for (Arc arc : arcs)
