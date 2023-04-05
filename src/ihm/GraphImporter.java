@@ -16,6 +16,10 @@ public class GraphImporter {
     /**
      * Imports the response of a graph from a file.
      * The response contains the distance and the path result of shortest path algorithm.
+     * @param filePath path of the file
+     * @param chemin   list of nodes to fill
+     * @return the distance
+     * @throws FileNotFoundException if the file is not found
      */
     public static int importerReponse(String filePath, List<Integer> chemin) throws FileNotFoundException {
         File file = new File(filePath);
@@ -32,8 +36,9 @@ public class GraphImporter {
 
     /**
      * Imports a graph from a file.
+     *
      * @param filepath path of the file
-     * @param g graph to import
+     * @param g        graph to import
      * @return the last arc imported (which is the shortest path source and destination to find)
      */
     public static Arc importer(String filepath, IGraphe g) {
@@ -43,8 +48,9 @@ public class GraphImporter {
 
     /**
      * Imports a graph from a file.
+     *
      * @param file file
-     * @param g graph to import
+     * @param g    graph to import
      * @return the last arc imported (which is the shortest path source and destination to find)
      */
     private static Arc importer(File file, IGraphe g) {
@@ -71,6 +77,7 @@ public class GraphImporter {
 
     /**
      * Parses a line of the file to an arc.
+     *
      * @param string line of the file
      * @return constructed arc
      */

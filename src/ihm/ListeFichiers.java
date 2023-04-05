@@ -50,6 +50,7 @@ public class ListeFichiers {
 
     /**
      * Returns the list of files without circuits.
+     *
      * @return the list of files without circuits
      */
     public static ArrayList<String> getListeFichiersSC() {
@@ -58,6 +59,7 @@ public class ListeFichiers {
 
     /**
      * Returns the list of files with circuits.
+     *
      * @return the list of files with circuits
      */
     public static ArrayList<String> getListeFichiersAC() {
@@ -68,17 +70,41 @@ public class ListeFichiers {
      * Enum containing the paths to the files.
      */
     public enum Repertoires {
+        /**
+         * Path to graph files.
+         */
         REPERTOIRE_ENONCE("graphes/"),
+        /**
+         * Path to answer files.
+         */
         REPERTOIRE_REPONSE("reponses/"),
+        /**
+         * Path to graph files with circuits.
+         */
         REPERTOIRE_CIRCUIT("ac/"),
+        /**
+         * Path to graph files without circuits.
+         */
         REPERTOIRE_SANS_CIRCUIT("sc/");
 
+        /**
+         * Path.
+         */
         private final String path;
 
+        /**
+         * Constructor of the enum to assign a path to each enum.
+         * @param path file path
+         */
         Repertoires(String path) {
             this.path = path;
         }
 
+        /**
+         * Returns the associated path.
+         * @param r enum to get the path from
+         * @return the associated path
+         */
         public static String getPath(Repertoires r) {
             return r.path;
         }

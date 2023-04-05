@@ -12,6 +12,7 @@ import static src.ihm.ListeFichiers.getListeFichiersSC;
 public class AppliCompare {
     /**
      * Main method.
+     *
      * @param args arguments (not used)
      * @throws FileNotFoundException if a file is not found
      */

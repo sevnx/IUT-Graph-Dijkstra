@@ -6,7 +6,7 @@ import src.graphe.types.GrapheHHadj;
 import src.graphe.types.GrapheLAdj;
 import src.graphe.types.GrapheLArcs;
 import src.graphe.types.GrapheMAdj;
-import src.pcc.PccDjikstra;
+import src.pcc.PccDijkstra;
 
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
@@ -31,7 +31,7 @@ public class GraphComparer {
         Arc df = GraphImporter.importer(fichierEnonce, gLArcs);
         Map<String, Integer> distances = new HashMap<>();
         Map<String, String> predecesseurs = new HashMap<>();
-        PccDjikstra.dijkstra(gLArcs, df.getSource(), distances, predecesseurs);
+        PccDijkstra.dijkstra(gLArcs, df.getSource(), distances, predecesseurs);
         int distanceAttendue = GraphImporter.importerReponse(fichierReponse, new ArrayList<>());
         int distanceCalculee = distances.get(df.getDestination());
         if (distanceCalculee != distanceAttendue)
@@ -86,7 +86,7 @@ public class GraphComparer {
         long startTime = System.nanoTime();
         Map<String, Integer> distances = new HashMap<>();
         Map<String, String> predecesseurs = new HashMap<>();
-        PccDjikstra.dijkstra(g, df.getSource(), distances, predecesseurs);
+        PccDijkstra.dijkstra(g, df.getSource(), distances, predecesseurs);
         if (distances.get(df.getDestination()) != distance)
             throw new IllegalStateException("Distance attendue : " + distance + " Distance calculée : " + distances.get(df.getDestination()));
         long endTime = System.nanoTime();
