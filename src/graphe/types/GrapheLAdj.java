@@ -125,7 +125,7 @@ public class GrapheLAdj implements IGraphe {
     @Override
     public String toString() {
         List<String> arcsString = new ArrayList<>();
-        for (String sommet : ladj.keySet()){
+        for (String sommet : ladj.keySet()) {
             if (ladj.get(sommet).isEmpty())
                 arcsString.add(new Arc(sommet).toString());
             else

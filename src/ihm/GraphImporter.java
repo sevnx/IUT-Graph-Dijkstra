@@ -9,7 +9,14 @@ import java.io.FileNotFoundException;
 import java.util.List;
 import java.util.Scanner;
 
+/**
+ * Utility class to import a graph from a file.
+ */
 public class GraphImporter {
+    /**
+     * Imports the response of a graph from a file.
+     * The response contains the distance and the path result of shortest path algorithm.
+     */
     public static int importerReponse(String filePath, List<Integer> chemin) throws FileNotFoundException {
         File file = new File(filePath);
         try (Scanner sc = new Scanner(file)) {
@@ -23,11 +30,23 @@ public class GraphImporter {
         }
     }
 
+    /**
+     * Imports a graph from a file.
+     * @param filepath path of the file
+     * @param g graph to import
+     * @return the last arc imported (which is the shortest path source and destination to find)
+     */
     public static Arc importer(String filepath, IGraphe g) {
         File file = new File(filepath);
         return importer(file, g);
     }
 
+    /**
+     * Imports a graph from a file.
+     * @param file file
+     * @param g graph to import
+     * @return the last arc imported (which is the shortest path source and destination to find)
+     */
     private static Arc importer(File file, IGraphe g) {
         try (Scanner sc = new Scanner(file)) {
             String line;
@@ -50,6 +69,11 @@ public class GraphImporter {
         }
     }
 
+    /**
+     * Parses a line of the file to an arc.
+     * @param string line of the file
+     * @return constructed arc
+     */
     public static Arc parse(String string) {
         String[] parts = string.split(" ");
         String source;

@@ -32,35 +32,55 @@ class IGrapheTest {
                     + "I-H(10), "
                     + "J:";
 
+    // melangee
+    private final String g31a = "D-C(5), D-E(3), D-B(3), "
+            + "E-G(3), E-C(1), E-H(7), "
+            + "I-H(10), "
+            + "J:,"
+            + "G-B(2), G-F(1), "
+            + "F:, "
+            + "H-G(2), H-F(4), "
+            + "A-C(2), A-D(1), "
+            + "B-G(3), "
+            + "C-H(2) ";
+
     @Test
     void exo3_1Maths_LArcs() {
         GrapheLArcs glarc = new GrapheLArcs(g31);
+        GrapheLArcs glarc2 = new GrapheLArcs(g31a);
         tester3_1(glarc);
+        tester3_1(glarc2);
     }
 
     @Test
     void exo3_1Maths_MAdj() {
         GrapheMAdj gmadj = new GrapheMAdj(g31);
+        GrapheMAdj gmadj2 = new GrapheMAdj(g31a);
         tester3_1(gmadj);
+        tester3_1(gmadj2);
     }
 
     @Test
     void exo3_1Maths_LAdj() {
         GrapheLAdj gladj = new GrapheLAdj(g31);
+        GrapheLAdj gladj2 = new GrapheLAdj(g31a);
         tester3_1(gladj);
+        tester3_1(gladj2);
     }
 
     @Test
     void exo3_1Maths_HHadj() {
         GrapheHHadj ghhadj = new GrapheHHadj(g31);
+        GrapheHHadj ghhadj2 = new GrapheHHadj(g31a);
         tester3_1(ghhadj);
+        tester3_1(ghhadj2);
     }
 
     void tester3_1(IGraphe g) {
         List<String> sommets_exp = List.of("A", "B", "C", "D", "E", "F", "G", "H", "I", "J");
         List<String> sommets = new ArrayList<>(g.getSommets()); // pas forcement triee
         Collections.sort(sommets);
-        assertEquals(sommets_exp, g.getSommets());
+        assertEquals(sommets_exp, sommets);
         assertTrue(g.contientSommet("C"));
         assertFalse(g.contientSommet("c"));
         assertTrue(g.contientArc("C", "H"));
@@ -86,7 +106,8 @@ class IGrapheTest {
 
     @Test
     void importer() throws NumberFormatException, FileNotFoundException {
-        IGraphe g = new GrapheLArcs();
+        System.out.println("SAE graphes");
+        IGraphe g = new GrapheLAdj();
         Arc a = GraphImporter.importer("graphes/ac/g-10-1.txt", g);
         assertEquals(g.toString(), "1-3(5), "
                 + "10-3(3), 2-1(5), 2-3(5), 2-5(4), "

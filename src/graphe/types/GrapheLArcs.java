@@ -53,6 +53,8 @@ public class GrapheLArcs implements IGraphe {
     public void ajouterArc(String source, String destination, Integer valeur) {
         if (contientArc(source, EMPTY_EDGE_DESTINATION))
             oterArc(source, EMPTY_EDGE_DESTINATION);
+        if (!contientSommet(destination))
+            ajouterSommet(destination);
         else if (contientArc(source, destination))
             throw new ArcExistantException();
         arcs.add(new Arc(source, destination, valeur));
@@ -72,11 +74,8 @@ public class GrapheLArcs implements IGraphe {
     @Override
     public List<String> getSommets() {
         HashSet<String> nodes = new HashSet<>();
-        for (Arc arc : arcs) {
+        for (Arc arc : arcs)
             nodes.add(arc.getSource());
-            if (!arc.getDestination().equals(EMPTY_EDGE_DESTINATION))
-                nodes.add(arc.getDestination());
-        }
         ArrayList<String> nodesList = new ArrayList<>(nodes);
         Collections.sort(nodesList);
         return nodesList;
@@ -121,9 +120,8 @@ public class GrapheLArcs implements IGraphe {
     @Override
     public String toString() {
         List<String> arcsString = new ArrayList<>();
-        for (Arc arc : arcs) {
+        for (Arc arc : arcs)
             arcsString.add(arc.toString());
-        }
         return ArcListStringConverter.convertToString(arcsString);
     }
 }

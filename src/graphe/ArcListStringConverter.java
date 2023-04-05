@@ -6,7 +6,7 @@ import java.util.List;
 /**
  * Converts a list of string representing arcs to a string.
  */
-public abstract class ArcListStringConverter {
+public class ArcListStringConverter {
     /**
      * Converts a list of string representing arcs to a string.
      *

@@ -13,21 +13,17 @@ import java.util.*;
  */
 public class GrapheMAdj implements IGraphe {
     /**
-     * Value of the self edge of an empty node, that signifies that the node doesn't have an outgoing edge.
-     */
-    private static final int EMPTY_NODE_SELF_EDGE = 0;
-    /**
      * Value which indicates that there is no edge between two nodes.
      */
     private static final int NO_EDGE = Integer.MAX_VALUE;
     /**
-     * Adjacency matrix representation of the graph.
-     */
-    private int[][] matrice;
-    /**
      * Map of the indexes of the nodes in the adjacency matrix, matches a name to an index
      */
     private final Map<String, Integer> indices;
+    /**
+     * Adjacency matrix representation of the graph.
+     */
+    private int[][] matrice;
 
     /**
      * Default constructor of the class.
@@ -63,7 +59,6 @@ public class GrapheMAdj implements IGraphe {
                         newMatrice[i][j] = NO_EDGE;
                 }
             }
-            newMatrice[newSize - 1][newSize - 1] = EMPTY_NODE_SELF_EDGE;
             matrice = newMatrice;
         }
     }
@@ -74,8 +69,6 @@ public class GrapheMAdj implements IGraphe {
             ajouterSommet(source);
         if (!contientSommet(destination))
             ajouterSommet(destination);
-        if (contientArc(source, source))
-            oterArc(source, source);
         if (contientArc(source, destination))
             throw new ArcExistantException();
         if (source.isEmpty() || destination.isEmpty())
@@ -84,7 +77,7 @@ public class GrapheMAdj implements IGraphe {
             throw new ArcValuationNegativeException();
         matrice[indices.get(source)][indices.get(destination)] = valeur;
     }
-    
+
     @Override
     public void oterSommet(String noeud) {
         if (contientSommet(noeud)) {
@@ -178,16 +171,18 @@ public class GrapheMAdj implements IGraphe {
 
     @Override
     public String toString() {
+        boolean found;
         List<String> arcs = new ArrayList<>();
         for (int i = 0; i < indices.size(); i++) {
+            found = false;
             for (int j = 0; j < indices.size(); j++) {
                 if (matrice[i][j] != NO_EDGE) {
-                    if (matrice[i][j] == 0)
-                        arcs.add(getKeyFromValue(i) + ":");
-                    else
-                        arcs.add(getKeyFromValue(i) + "-" + getKeyFromValue(j) + "(" + matrice[i][j] + ")");
+                    arcs.add(getKeyFromValue(i) + "-" + getKeyFromValue(j) + "(" + matrice[i][j] + ")");
+                    found = true;
                 }
             }
+            if (!found)
+                arcs.add(getKeyFromValue(i) + ":");
         }
         return ArcListStringConverter.convertToString(arcs);
     }

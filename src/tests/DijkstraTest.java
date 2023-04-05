@@ -1,29 +1,22 @@
 package src.tests;
 
 
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import src.graphe.IGraphe;
 import src.graphe.types.GrapheHHadj;
 import src.graphe.types.GrapheLAdj;
 import src.graphe.types.GrapheLArcs;
 import src.graphe.types.GrapheMAdj;
-import src.pcc.PccDijkstra;
+import src.pcc.PccDjikstra;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
-import static org.junit.jupiter.api.Assertions.assertArrayEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class DijkstraTest {
-
-    private String[] toTab(String debut, String fin, PccDijkstra pcc) {
-        ArrayList<String> path = pcc.chemin(debut, fin);
-        String[] res = new String[path.size()];
-        for (int i = 0; i < path.size(); ++i)
-            res[i] = path.get(i);
-        return res;
-    }
-
     @Test
     void Dijkstra_LArcs() {
         GrapheLArcs glarc = new GrapheLArcs();
@@ -49,8 +42,9 @@ class DijkstraTest {
     }
 
 
-
     void test(IGraphe g) {
+        Map<String, Integer> dist = new HashMap<>();
+        Map<String, String> pred = new HashMap<>();
         g.ajouterArc("A", "B", 2);
         g.ajouterArc("A", "E", 2);
         g.ajouterArc("A", "F", 1);
@@ -60,20 +54,20 @@ class DijkstraTest {
         g.ajouterArc("C", "D", 1);
         g.ajouterArc("D", "E", 2);
         g.ajouterArc("F", "E", 2);
-        PccDijkstra toto = new PccDijkstra(g);
-        String[] resAttendu = {"A", "B", "C", "D"};
-        assertArrayEquals(resAttendu, toTab("A", "D", toto));
-        Assertions.assertEquals(3, toto.distance("A","D"));
+        PccDjikstra.dijkstra(g, "A", dist, pred);
+        List<String> resAttendu = new ArrayList<>(List.of("A", "B", "C", "D"));
+        assertEquals(resAttendu, PccDjikstra.chemin(dist, pred, "A", "D"));
+        assertEquals(3, dist.get("D"));
 
         GrapheLArcs g1 = new GrapheLArcs();
         g1.ajouterArc("A", "C", 1);
         g1.ajouterArc("C", "B", 1);
         g1.ajouterArc("B", "A", 1);
         g1.ajouterArc("A", "D", 2);
-        PccDijkstra toto1 = new PccDijkstra(g1);
-        String[] resAttendu2 = {"A", "D"};
-        assertArrayEquals(resAttendu2, toTab("A", "D", toto1));
-        Assertions.assertEquals(2, toto1.distance("A","D"));
+        PccDjikstra.dijkstra(g1, "A", dist, pred);
+        List<String> resAttendu2 = new ArrayList<>(List.of("A", "D"));
+        assertEquals(resAttendu2, PccDjikstra.chemin(dist, pred, "A", "D"));
+        assertEquals(2, dist.get("D"));
 
 
         GrapheLArcs g3 = new GrapheLArcs();
@@ -82,9 +76,9 @@ class DijkstraTest {
         g3.ajouterArc("B", "D", 3);
         g3.ajouterArc("D", "E", 5);
         g3.ajouterArc("C", "E", 4);
-        PccDijkstra toto3 = new PccDijkstra(g3);
-        String[] resAttendu3 = {"A", "B", "D"};
-        assertArrayEquals(resAttendu3, toTab("A", "D", toto3));
-        Assertions.assertEquals(4, toto3.distance("A","D"));
+        PccDjikstra.dijkstra(g3, "A", dist, pred);
+        List<String> resAttendu3 = new ArrayList<>(List.of("A", "B", "D"));
+        assertEquals(resAttendu3, PccDjikstra.chemin(dist, pred, "A", "D"));
+        assertEquals(4, dist.get("D"));
     }
 }

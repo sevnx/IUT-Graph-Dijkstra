@@ -4,19 +4,26 @@ import src.graphe.exceptions.ArcValuationNegativeException;
 import src.graphe.exceptions.EmptySommetException;
 
 /**
- * Un src.graphe.arc est un couple (source, destination) avec une valuation.
- * La valuation est un entier positif.
- *
- * @author Seweryn CZYKINOWSKI
+ * Class representing an arc.
+ * An arc is defined by a source, a destination and a valuation.
+ * The valuation has to be positive.
  */
 public class Arc {
-    /** Destination string that indicates that an arc does not have any outgoing arc. */
+    /**
+     * Destination string that indicates that an arc does not have any outgoing arc.
+     */
     public static final String EMPTY_EDGE_DESTINATION = "";
-    /** Source of the arc. */
+    /**
+     * Source of the arc.
+     */
     private final String source;
-    /** Destination of the arc. */
+    /**
+     * Destination of the arc.
+     */
     private final String destination;
-    /** Valuation of the arc. */
+    /**
+     * Valuation of the arc.
+     */
     private final int valuation;
 
     /**
@@ -26,7 +33,7 @@ public class Arc {
      * @param destination Destination of the arc.
      * @param valuation   Valuation of the arc.
      * @throws ArcValuationNegativeException If valuation is negative
-     * @throws EmptySommetException If source or destination is empty
+     * @throws EmptySommetException          If source or destination is empty
      */
     public Arc(String source, String destination, int valuation) {
         if (valuation < 0)
@@ -52,6 +59,7 @@ public class Arc {
 
     /**
      * Getter for source.
+     *
      * @return Source of the arc.
      */
     public String getSource() {
@@ -60,6 +68,7 @@ public class Arc {
 
     /**
      * Getter for destination.
+     *
      * @return Destination of the arc.
      */
     public String getDestination() {
@@ -68,6 +77,7 @@ public class Arc {
 
     /**
      * Getter for valuation.
+     *
      * @return Valuation of the arc.
      */
     public int getValuation() {
@@ -77,6 +87,7 @@ public class Arc {
     /**
      * toString method for the arc.
      * Different representation for arcs with no destination.
+     *
      * @return String representation of the arc.
      */
     public String toString() {
@@ -87,9 +98,11 @@ public class Arc {
 
     /**
      * Equals method for the arc.
+     *
      * @param o Object to compare to.
-     * @return True if the object is an arc and has the same source, destination and valuation.
+     * @return True if the object is an arc and has the same source and destination, false otherwise.
      */
+    @Override
     public boolean equals(Object o) {
         if (o == null)
             return false;
@@ -97,6 +110,6 @@ public class Arc {
             return true;
         if (!(o instanceof Arc arc))
             return false;
-        return source.equals(arc.source) && destination.equals(arc.destination) && valuation == arc.valuation;
+        return source.equals(arc.source) && destination.equals(arc.destination);
     }
 }

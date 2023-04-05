@@ -3,24 +3,17 @@ package src.ihm;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Contains the list of files to be tested.
+ */
 public class ListeFichiers {
-    public enum Repertoires {
-        REPERTOIRE_ENONCE("graphes/"),
-        REPERTOIRE_REPONSE("reponses/"),
-        REPERTOIRE_CIRCUIT("ac/"),
-        REPERTOIRE_SANS_CIRCUIT ("sc/");
-
-        private final String path;
-
-        Repertoires(String path) {
-            this.path = path;
-        }
-
-        public static String getPath(Repertoires r) {
-            return r.path;
-        }
-    }
+    /**
+     * List of files without circuits.
+     */
     private static final List<String> listeFichiersSC;
+    /**
+     * List of files with circuits.
+     */
     private static final List<String> listeFichiersAC;
 
     static {
@@ -54,12 +47,41 @@ public class ListeFichiers {
         listeFichiersAC.add("g-100-3.txt");
         listeFichiersAC.add("g-100-4.txt");
     }
+
+    /**
+     * Returns the list of files without circuits.
+     * @return the list of files without circuits
+     */
     public static ArrayList<String> getListeFichiersSC() {
         return new ArrayList<>(listeFichiersSC);
     }
 
+    /**
+     * Returns the list of files with circuits.
+     * @return the list of files with circuits
+     */
     public static ArrayList<String> getListeFichiersAC() {
         return new ArrayList<>(listeFichiersAC);
+    }
+
+    /**
+     * Enum containing the paths to the files.
+     */
+    public enum Repertoires {
+        REPERTOIRE_ENONCE("graphes/"),
+        REPERTOIRE_REPONSE("reponses/"),
+        REPERTOIRE_CIRCUIT("ac/"),
+        REPERTOIRE_SANS_CIRCUIT("sc/");
+
+        private final String path;
+
+        Repertoires(String path) {
+            this.path = path;
+        }
+
+        public static String getPath(Repertoires r) {
+            return r.path;
+        }
     }
 }
 

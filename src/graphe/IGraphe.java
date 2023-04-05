@@ -1,6 +1,5 @@
 package src.graphe;
 
-
 /**
  * Interface for graphs.
  */
@@ -19,9 +18,9 @@ public interface IGraphe extends IGrapheConst {
      * @param source      the source node
      * @param destination the destination node
      * @param valeur      the value of the edge
-     * @throws src.graphe.exceptions.ArcExistantException        if the edge already exists
+     * @throws src.graphe.exceptions.ArcExistantException          if the edge already exists
      * @throws src.graphe.exceptions.ArcValuationNegativeException if the edge value is negative
-     * @throws src.graphe.exceptions.EmptySommetException         if one of the nodes (source or destination) is empty
+     * @throws src.graphe.exceptions.EmptySommetException          if one of the nodes (source or destination) is empty
      */
     void ajouterArc(String source, String destination, Integer valeur);
 
@@ -39,7 +38,6 @@ public interface IGraphe extends IGrapheConst {
      *
      * @param source      the source node
      * @param destination the destination node
-     *
      * @throws src.graphe.exceptions.ArcInexistantException if the edge does not exist
      */
     void oterArc(String source, String destination);

@@ -3,9 +3,16 @@ package src.graphe.exceptions;
 import java.io.Serial;
 import java.io.Serializable;
 
-public class ArcInexistantException extends IllegalArgumentException implements Serializable{
+/**
+ * Exception thrown when an arc does not exist, and it is expected to.
+ */
+public class ArcInexistantException extends IllegalArgumentException implements Serializable {
     @Serial
     private static final long serialVersionUID = 4L;
+
+    /**
+     * Default constructor with predefined message.
+     */
     public ArcInexistantException() {
         super("Arc inexistant.");
     }
