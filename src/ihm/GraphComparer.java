@@ -2,10 +2,11 @@ package src.ihm;
 
 import src.graphe.IGrapheConst;
 import src.graphe.arc.Arc;
-import src.graphe.types.GrapheHHadj;
+import src.graphe.types.GrapheHHAdj;
 import src.graphe.types.GrapheLAdj;
 import src.graphe.types.GrapheLArcs;
 import src.graphe.types.GrapheMAdj;
+import src.ihm.exceptions.NotMatchingPathLengthException;
 import src.pcc.PccDijkstra;
 
 import java.io.FileNotFoundException;
@@ -35,7 +36,7 @@ public class GraphComparer {
         int distanceAttendue = GraphImporter.importerReponse(fichierReponse, new ArrayList<>());
         int distanceCalculee = distances.get(df.getDestination());
         if (distanceCalculee != distanceAttendue)
-            throw new RuntimeException("Distance attendue : " + distanceAttendue + "/" + "Distance calculée : " + distanceCalculee);
+            throw new NotMatchingPathLengthException(distanceCalculee, distanceAttendue);
         return true;
     }
 
@@ -54,7 +55,7 @@ public class GraphComparer {
         GrapheLArcs gLArcs = new GrapheLArcs();
         Arc df = GraphImporter.importer(fichierEnonce, gLArcs);
         long endTimeLArcs = System.nanoTime();
-        GrapheHHadj gHHadj = new GrapheHHadj();
+        GrapheHHAdj gHHadj = new GrapheHHAdj();
         Arc df2 = GraphImporter.importer(fichierEnonce, gHHadj);
         long endTimeHHadj = System.nanoTime();
         GrapheLAdj gLAdj = new GrapheLAdj();

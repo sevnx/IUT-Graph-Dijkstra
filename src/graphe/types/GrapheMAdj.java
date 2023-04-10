@@ -1,7 +1,7 @@
 package src.graphe.types;
 
-import src.graphe.ArcListStringConverter;
 import src.graphe.IGraphe;
+import src.graphe.IGrapheConst;
 import src.graphe.exceptions.*;
 
 import java.util.*;
@@ -12,10 +12,6 @@ import java.util.*;
  * @see IGraphe
  */
 public class GrapheMAdj implements IGraphe {
-    /**
-     * Value which indicates that there is no edge between two nodes.
-     */
-    private static final int NO_EDGE = Integer.MAX_VALUE;
     /**
      * Map of the indexes of the nodes in the adjacency matrix, matches a name to an index
      */
@@ -49,18 +45,21 @@ public class GrapheMAdj implements IGraphe {
     public void ajouterSommet(String noeud) {
         if (!contientSommet(noeud)) {
             indices.put(noeud, matrice.length);
-            int newSize = matrice.length + 1;
-            int[][] newMatrice = new int[newSize][newSize];
-            for (int i = 0; i < newSize; i++) {
-                for (int j = 0; j < newSize; j++) {
-                    if (i < newSize - 1 && j < newSize - 1)
-                        newMatrice[i][j] = matrice[i][j];
-                    else
-                        newMatrice[i][j] = NO_EDGE;
-                }
-            }
-            matrice = newMatrice;
+            addSommetToMatrix();
         }
+    }
+
+    private void addSommetToMatrix() {
+        int newSize = matrice.length + 1;
+        int[][] newMatrice = new int[newSize][newSize];
+        for (int i = 0; i < newSize; i++)
+            for (int j = 0; j < newSize; j++) {
+                if (i < newSize - 1 && j < newSize - 1)
+                    newMatrice[i][j] = matrice[i][j];
+                else
+                    newMatrice[i][j] = IGrapheConst.NO_EDGE;
+            }
+        matrice = newMatrice;
     }
 
     @Override
@@ -83,6 +82,15 @@ public class GrapheMAdj implements IGraphe {
         if (contientSommet(noeud)) {
             int index = indices.get(noeud);
             removeIndexFromMatrix(index);
+            removeIndexFromMap(noeud, index);
+        }
+    }
+
+    private void removeIndexFromMap(String noeud, int index) {
+        indices.remove(noeud);
+        for (String key : indices.keySet()) {
+            if (indices.get(key) > index)
+                indices.put(key, indices.get(key) - 1);
         }
     }
 
@@ -107,7 +115,7 @@ public class GrapheMAdj implements IGraphe {
     @Override
     public void oterArc(String source, String destination) {
         if (contientArc(source, destination))
-            matrice[indices.get(source)][indices.get(destination)] = NO_EDGE;
+            matrice[indices.get(source)][indices.get(destination)] = IGrapheConst.NO_EDGE;
         else
             throw new ArcInexistantException();
     }
@@ -129,7 +137,7 @@ public class GrapheMAdj implements IGraphe {
         List<String> succ = new ArrayList<>();
         Integer index = indices.get(sommet);
         for (int i = 0; i < matrice.length; ++i)
-            if (matrice[index][i] != NO_EDGE)
+            if (matrice[index][i] != IGrapheConst.NO_EDGE)
                 succ.add(getKeyFromValue(i));
         Collections.sort(succ);
         return succ;
@@ -137,8 +145,10 @@ public class GrapheMAdj implements IGraphe {
 
     @Override
     public int getValuation(String src, String dest) {
+        if (!contientSommet(src) || !contientSommet(dest))
+            throw new SommetInexistantException();
         if (!contientArc(src, dest))
-            throw new ArcInexistantException();
+            return IGrapheConst.NO_EDGE;
         return matrice[indices.get(src)][indices.get(dest)];
     }
 
@@ -151,7 +161,7 @@ public class GrapheMAdj implements IGraphe {
     public boolean contientArc(String src, String dest) {
         if (!contientSommet(src) || !contientSommet(dest))
             return false;
-        return matrice[indices.get(src)][indices.get(dest)] != NO_EDGE;
+        return matrice[indices.get(src)][indices.get(dest)] != IGrapheConst.NO_EDGE;
     }
 
     /**
@@ -171,19 +181,6 @@ public class GrapheMAdj implements IGraphe {
 
     @Override
     public String toString() {
-        boolean found;
-        List<String> arcs = new ArrayList<>();
-        for (int i = 0; i < indices.size(); i++) {
-            found = false;
-            for (int j = 0; j < indices.size(); j++) {
-                if (matrice[i][j] != NO_EDGE) {
-                    arcs.add(getKeyFromValue(i) + "-" + getKeyFromValue(j) + "(" + matrice[i][j] + ")");
-                    found = true;
-                }
-            }
-            if (!found)
-                arcs.add(getKeyFromValue(i) + ":");
-        }
-        return ArcListStringConverter.convertToString(arcs);
+        return this.toAString();
     }
 }

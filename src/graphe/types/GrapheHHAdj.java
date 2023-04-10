@@ -1,7 +1,7 @@
 package src.graphe.types;
 
-import src.graphe.ArcListStringConverter;
 import src.graphe.IGraphe;
+import src.graphe.IGrapheConst;
 import src.graphe.arc.Arc;
 import src.graphe.exceptions.*;
 
@@ -10,7 +10,7 @@ import java.util.*;
 /**
  * Representation of a graph with a hash map of hash maps.
  */
-public class GrapheHHadj implements IGraphe {
+public class GrapheHHAdj implements IGraphe {
     /**
      * Adjacency list : map that matches a node name to a map
      * that matches a node name to the value of the edge between them.
@@ -21,7 +21,7 @@ public class GrapheHHadj implements IGraphe {
      * Default constructor of the class.
      * Creates an empty graph.
      */
-    public GrapheHHadj() {
+    public GrapheHHAdj() {
         hhadj = new HashMap<>();
     }
 
@@ -31,7 +31,7 @@ public class GrapheHHadj implements IGraphe {
      * @param str the string representation of the graph
      * @see IGraphe#peupler(String)
      */
-    public GrapheHHadj(String str) {
+    public GrapheHHAdj(String str) {
         this();
         peupler(str);
     }
@@ -91,8 +91,10 @@ public class GrapheHHadj implements IGraphe {
 
     @Override
     public int getValuation(String src, String dest) {
+        if (!contientSommet(src) || !contientSommet(dest))
+            throw new SommetInexistantException();
         if (!contientArc(src, dest))
-            throw new ArcInexistantException();
+            return IGrapheConst.NO_EDGE;
         return hhadj.get(src).get(dest);
     }
 
@@ -110,16 +112,6 @@ public class GrapheHHadj implements IGraphe {
 
     @Override
     public String toString() {
-        List<String> arcs = new ArrayList<>();
-        for (String sommet : getSommets()) {
-            List<String> succs = getSucc(sommet);
-            if (succs.isEmpty())
-                arcs.add(sommet + ":");
-            else {
-                for (String succ : succs)
-                    arcs.add(sommet + "-" + succ + "(" + hhadj.get(sommet).get(succ) + ")");
-            }
-        }
-        return ArcListStringConverter.convertToString(arcs);
+        return this.toAString();
     }
 }

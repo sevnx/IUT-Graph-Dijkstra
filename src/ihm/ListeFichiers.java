@@ -53,7 +53,7 @@ public class ListeFichiers {
      *
      * @return the list of files without circuits
      */
-    public static ArrayList<String> getListeFichiersSC() {
+    public static List<String> getListeFichiersSC() {
         return new ArrayList<>(listeFichiersSC);
     }
 
@@ -62,7 +62,7 @@ public class ListeFichiers {
      *
      * @return the list of files with circuits
      */
-    public static ArrayList<String> getListeFichiersAC() {
+    public static List<String> getListeFichiersAC() {
         return new ArrayList<>(listeFichiersAC);
     }
 
@@ -94,6 +94,7 @@ public class ListeFichiers {
 
         /**
          * Constructor of the enum to assign a path to each enum.
+         *
          * @param path file path
          */
         Repertoires(String path) {
@@ -102,6 +103,7 @@ public class ListeFichiers {
 
         /**
          * Returns the associated path.
+         *
          * @param r enum to get the path from
          * @return the associated path
          */

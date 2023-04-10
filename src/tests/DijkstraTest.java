@@ -3,7 +3,7 @@ package src.tests;
 
 import org.junit.jupiter.api.Test;
 import src.graphe.IGraphe;
-import src.graphe.types.GrapheHHadj;
+import src.graphe.types.GrapheHHAdj;
 import src.graphe.types.GrapheLAdj;
 import src.graphe.types.GrapheLArcs;
 import src.graphe.types.GrapheMAdj;
@@ -17,30 +17,22 @@ import java.util.Map;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class DijkstraTest {
-    @Test
-    void Dijkstra_LArcs() {
-        GrapheLArcs glarc = new GrapheLArcs();
-        test(glarc);
+    private final IGraphe[] graphes = {
+            new GrapheLArcs(), new GrapheLArcs(),
+            new GrapheMAdj(), new GrapheHHAdj(), new GrapheLAdj()
+    };
+
+    private static void resetGraphe(IGraphe g) {
+        for (String s : g.getSommets())
+            g.oterSommet(s);
     }
 
     @Test
-    void Dijkstra_MAdj() {
-        GrapheMAdj gmadj = new GrapheMAdj();
-        test(gmadj);
+    void testAllGraphes() {
+        for (IGraphe g : graphes) {
+            test(g);
+        }
     }
-
-    @Test
-    void Dijkstra_LAdj() {
-        GrapheLAdj gladj = new GrapheLAdj();
-        test(gladj);
-    }
-
-    @Test
-    void Dijkstra_HHadj() {
-        GrapheHHadj ghhadj = new GrapheHHadj();
-        test(ghhadj);
-    }
-
 
     void test(IGraphe g) {
         Map<String, Integer> dist = new HashMap<>();
@@ -58,25 +50,22 @@ class DijkstraTest {
         List<String> resAttendu = new ArrayList<>(List.of("A", "B", "C", "D"));
         assertEquals(resAttendu, PccDijkstra.chemin(dist, pred, "A", "D"));
         assertEquals(3, dist.get("D"));
-
-        GrapheLArcs g1 = new GrapheLArcs();
-        g1.ajouterArc("A", "C", 1);
-        g1.ajouterArc("C", "B", 1);
-        g1.ajouterArc("B", "A", 1);
-        g1.ajouterArc("A", "D", 2);
-        PccDijkstra.dijkstra(g1, "A", dist, pred);
+        resetGraphe(g);
+        g.ajouterArc("A", "C", 1);
+        g.ajouterArc("C", "B", 1);
+        g.ajouterArc("B", "A", 1);
+        g.ajouterArc("A", "D", 2);
+        PccDijkstra.dijkstra(g, "A", dist, pred);
         List<String> resAttendu2 = new ArrayList<>(List.of("A", "D"));
         assertEquals(resAttendu2, PccDijkstra.chemin(dist, pred, "A", "D"));
         assertEquals(2, dist.get("D"));
-
-
-        GrapheLArcs g3 = new GrapheLArcs();
-        g3.ajouterArc("A", "B", 1);
-        g3.ajouterArc("A", "C", 2);
-        g3.ajouterArc("B", "D", 3);
-        g3.ajouterArc("D", "E", 5);
-        g3.ajouterArc("C", "E", 4);
-        PccDijkstra.dijkstra(g3, "A", dist, pred);
+        resetGraphe(g);
+        g.ajouterArc("A", "B", 1);
+        g.ajouterArc("A", "C", 2);
+        g.ajouterArc("B", "D", 3);
+        g.ajouterArc("D", "E", 5);
+        g.ajouterArc("C", "E", 4);
+        PccDijkstra.dijkstra(g, "A", dist, pred);
         List<String> resAttendu3 = new ArrayList<>(List.of("A", "B", "D"));
         assertEquals(resAttendu3, PccDijkstra.chemin(dist, pred, "A", "D"));
         assertEquals(4, dist.get("D"));

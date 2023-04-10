@@ -1,7 +1,7 @@
 package src.graphe.types;
 
-import src.graphe.ArcListStringConverter;
 import src.graphe.IGraphe;
+import src.graphe.IGrapheConst;
 import src.graphe.arc.Arc;
 import src.graphe.exceptions.ArcExistantException;
 import src.graphe.exceptions.ArcInexistantException;
@@ -96,9 +96,9 @@ public class GrapheLArcs implements IGraphe {
     @Override
     public int getValuation(String src, String dest) {
         for (Arc arc : arcs)
-            if (arc.getSource().equals(src) && arc.getDestination().equals(dest))
+            if (arc.equals(new Arc(src, dest, 0)))
                 return arc.getValuation();
-        throw new ArcInexistantException();
+        return IGrapheConst.NO_EDGE;
     }
 
     @Override
@@ -112,16 +112,13 @@ public class GrapheLArcs implements IGraphe {
     @Override
     public boolean contientArc(String src, String dest) {
         for (Arc arc : arcs)
-            if (arc.getSource().equals(src) && arc.getDestination().equals(dest))
+            if (arc.equals(dest.equals(EMPTY_EDGE_DESTINATION) ? new Arc(src) : new Arc(src, dest, 0)))
                 return true;
         return false;
     }
 
     @Override
     public String toString() {
-        List<String> arcsString = new ArrayList<>();
-        for (Arc arc : arcs)
-            arcsString.add(arc.toString());
-        return ArcListStringConverter.convertToString(arcsString);
+        return this.toAString();
     }
 }

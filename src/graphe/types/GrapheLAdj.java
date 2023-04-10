@@ -1,7 +1,7 @@
 package src.graphe.types;
 
-import src.graphe.ArcListStringConverter;
 import src.graphe.IGraphe;
+import src.graphe.IGrapheConst;
 import src.graphe.arc.Arc;
 import src.graphe.exceptions.ArcExistantException;
 import src.graphe.exceptions.ArcInexistantException;
@@ -46,7 +46,7 @@ public class GrapheLAdj implements IGraphe {
 
     @Override
     public void ajouterSommet(String noeud) {
-        if (!ladj.containsKey(noeud))
+        if (ladj.computeIfAbsent(noeud, k -> new ArrayList<>()).isEmpty())
             ladj.put(noeud, new ArrayList<>());
     }
 
@@ -99,12 +99,12 @@ public class GrapheLAdj implements IGraphe {
 
     @Override
     public int getValuation(String src, String dest) {
-        if (!contientSommet(src))
+        if (!contientSommet(src) || !contientSommet(dest))
             throw new SommetInexistantException();
         for (Arc arc : ladj.get(src))
             if (arc.getDestination().equals(dest))
                 return arc.getValuation();
-        throw new ArcInexistantException();
+        return IGrapheConst.NO_EDGE;
     }
 
     @Override
@@ -124,14 +124,6 @@ public class GrapheLAdj implements IGraphe {
 
     @Override
     public String toString() {
-        List<String> arcsString = new ArrayList<>();
-        for (String sommet : ladj.keySet()) {
-            if (ladj.get(sommet).isEmpty())
-                arcsString.add(new Arc(sommet).toString());
-            else
-                for (Arc arc : ladj.get(sommet))
-                    arcsString.add(arc.toString());
-        }
-        return ArcListStringConverter.convertToString(arcsString);
+        return this.toAString();
     }
 }

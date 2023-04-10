@@ -1,11 +1,15 @@
 package src.graphe;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
  * Interface for constant graphs.
  */
 public interface IGrapheConst {
+    int NO_EDGE = -1;
+
     /**
      * Returns the list of nodes.
      *
@@ -27,8 +31,8 @@ public interface IGrapheConst {
      *
      * @param src  the source node
      * @param dest the destination node
-     * @return the value of the edge
-     * @throws src.graphe.exceptions.ArcInexistantException if the edge is not in the graph
+     * @return the value of the edge, -1 if the edge is not in the graph
+     * @see IGrapheConst#NO_EDGE
      */
     int getValuation(String src, String dest);
 
@@ -48,4 +52,32 @@ public interface IGrapheConst {
      * @return true if the edge is in the graph, false otherwise
      */
     boolean contientArc(String src, String dest);
+
+    /**
+     * Returns a string representation of the graph.
+     */
+    default String toAString() {
+        List<String> sommetsTries = new ArrayList<>(getSommets());
+        Collections.sort(sommetsTries);
+
+        List<String> descriptionsArcs = new ArrayList<>();
+
+        for (String sommet : sommetsTries) {
+            List<String> successeurs = getSucc(sommet);
+
+            if (successeurs.isEmpty()) {
+                descriptionsArcs.add(sommet + ":");
+            } else {
+                List<String> successeursTries = new ArrayList<>(successeurs);
+                Collections.sort(successeursTries);
+
+                for (String successeur : successeursTries) {
+                    int poids = getValuation(sommet, successeur);
+                    descriptionsArcs.add(sommet + "-" + successeur + "(" + poids + ")");
+                }
+            }
+        }
+
+        return String.join(", ", descriptionsArcs);
+    }
 }

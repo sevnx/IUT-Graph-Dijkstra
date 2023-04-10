@@ -59,7 +59,7 @@ public class PccDijkstra {
                 break;
             pcc.queue.remove(u);
             for (String v : graphe.getSucc(u))
-                pcc.updateLength(u, v);
+                pcc.updateDistance(u, v);
         }
         dist.clear();
         pred.clear();
@@ -83,7 +83,7 @@ public class PccDijkstra {
         List<String> chemin = new ArrayList<>();
         String node = destination;
         if (dist.get(node) == INFINITE)
-            return null;
+            return new ArrayList<>();
         chemin.add(node);
         while (node != null && !node.equals(source)) {
             node = pred.get(node);
@@ -131,7 +131,7 @@ public class PccDijkstra {
      * @param u node to update from
      * @param v node to update (if the distance from the source node to the node u is shorter)
      */
-    private void updateLength(String u, String v) {
+    private void updateDistance(String u, String v) {
         int alt = distance.get(u) + graph.getValuation(u, v);
         if (alt < distance.get(v)) {
             distance.put(v, alt);

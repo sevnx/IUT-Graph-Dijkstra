@@ -4,8 +4,7 @@ package src.tests;
 import org.junit.jupiter.api.Test;
 import src.graphe.IGraphe;
 import src.graphe.arc.Arc;
-import src.graphe.types.GrapheHHadj;
-import src.graphe.types.GrapheLAdj;
+import src.graphe.types.GrapheHHAdj;
 import src.graphe.types.GrapheLArcs;
 import src.graphe.types.GrapheMAdj;
 import src.ihm.GraphImporter;
@@ -18,7 +17,11 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 
 class IGrapheTest {
-    // src.graphe de l'exercice 3.1 du poly de maths
+    private final IGraphe[] graphes = {
+            new GrapheLArcs(), new GrapheLArcs(),
+            new GrapheMAdj(), new GrapheHHAdj()
+    };
+    // graphe de l'exercice 3.1 du poly de maths
     // avec en plus un noeud isole : J
     private final String g31 =
             "A-C(2), A-D(1), "
@@ -32,7 +35,7 @@ class IGrapheTest {
                     + "I-H(10), "
                     + "J:";
 
-    // melangee
+    // arcs non tries
     private final String g31a = "D-C(5), D-E(3), D-B(3), "
             + "E-G(3), E-C(1), E-H(7), "
             + "I-H(10), "
@@ -45,35 +48,11 @@ class IGrapheTest {
             + "C-H(2) ";
 
     @Test
-    void exo3_1Maths_LArcs() {
-        GrapheLArcs glarc = new GrapheLArcs(g31);
-        GrapheLArcs glarc2 = new GrapheLArcs(g31a);
-        tester3_1(glarc);
-        tester3_1(glarc2);
-    }
-
-    @Test
-    void exo3_1Maths_MAdj() {
-        GrapheMAdj gmadj = new GrapheMAdj(g31);
-        GrapheMAdj gmadj2 = new GrapheMAdj(g31a);
-        tester3_1(gmadj);
-        tester3_1(gmadj2);
-    }
-
-    @Test
-    void exo3_1Maths_LAdj() {
-        GrapheLAdj gladj = new GrapheLAdj(g31);
-        GrapheLAdj gladj2 = new GrapheLAdj(g31a);
-        tester3_1(gladj);
-        tester3_1(gladj2);
-    }
-
-    @Test
-    void exo3_1Maths_HHadj() {
-        GrapheHHadj ghhadj = new GrapheHHadj(g31);
-        GrapheHHadj ghhadj2 = new GrapheHHadj(g31a);
-        tester3_1(ghhadj);
-        tester3_1(ghhadj2);
+    void exo3_1Maths() {
+        for (IGraphe g : graphes) {
+            g.peupler(g31a);
+            tester3_1(g);
+        }
     }
 
     void tester3_1(IGraphe g) {
@@ -104,17 +83,22 @@ class IGrapheTest {
                 () -> g.ajouterArc("A", "B", -1)); // valuation negative
     }
 
-    @Test
-    void importer() throws NumberFormatException, FileNotFoundException {
-        System.out.println("SAE graphes");
-        IGraphe g = new GrapheLAdj();
+    void testImportation(IGraphe g) {
         Arc a = GraphImporter.importer("graphes/ac/g-10-1.txt", g);
-        assertEquals(g.toString(), "1-3(5), "
-                + "10-3(3), 2-1(5), 2-3(5), 2-5(4), "
-                + "3-4(4), 3-5(4), 4-10(1), 4-2(1), 4-7(3), "
-                + "5-9(4), 6-2(3), 6-3(4), 7-3(2),"
-                + " 8-2(4), 8-6(1), 9-2(4)");
+        assertEquals("1-3(5), "
+                        + "10-3(3), 2-1(5), 2-3(5), 2-5(4), "
+                        + "3-4(4), 3-5(4), 4-10(1), 4-2(1), 4-7(3), "
+                        + "5-9(4), 6-2(3), 6-3(4), 7-3(2),"
+                        + " 8-2(4), 8-6(1), 9-2(4)",
+                g.toString());
         assertEquals("5", a.getSource());
         assertEquals("7", a.getDestination());
     }
+
+    @Test
+    void importer() throws NumberFormatException, FileNotFoundException {
+        for (IGraphe g : graphes)
+            testImportation(g);
+    }
+
 }

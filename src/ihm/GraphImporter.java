@@ -16,6 +16,7 @@ public class GraphImporter {
     /**
      * Imports the response of a graph from a file.
      * The response contains the distance and the path result of shortest path algorithm.
+     *
      * @param filePath path of the file
      * @param chemin   list of nodes to fill
      * @return the distance
@@ -59,7 +60,7 @@ public class GraphImporter {
             if (!sc.hasNextLine()) {
                 throw new IllegalArgumentException("Pas de src.graphe dans " + file);
             }
-            line = sc.nextLine();
+            sc.nextLine();
             Arc a = null;
             while (sc.hasNextLine()) {
                 line = sc.nextLine();
@@ -88,7 +89,7 @@ public class GraphImporter {
         String destination;
         try {
             source = parts[0];
-            valuation = Integer.valueOf(parts[1]);
+            valuation = Integer.parseInt(parts[1]);
             destination = parts[2];
         } catch (Exception e) {
             throw new IllegalArgumentException(string + " n'est pas un arc");
