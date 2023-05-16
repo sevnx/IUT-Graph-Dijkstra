@@ -8,9 +8,9 @@ import java.util.Map;
 import java.util.PriorityQueue;
 
 /**
- * Class that compute the shortest path between the source and the other vertices using the Dijkstra algorithm
+ * Class that computes the shortest path between the source and the other vertices using the Dijkstra algorithm
  */
-public class Dijkstra {
+public final class Dijkstra {
     /** Infinity to represent the distance between two vertices that are not connected */
     private static final int INFINITY = Integer.MAX_VALUE;
     /** Graph that will be used to compute the shortest path */
@@ -21,8 +21,8 @@ public class Dijkstra {
     private final Map<String, String> previous;
     /** Priority queue to get the next node to visit */
     private final PriorityQueue<String> queue;
-    /** Color of each node, to know if it has been visited or not */
-    private final Map<String, DijkstraState> color;
+    /** State of each node, to know if it has been visited or not */
+    private final Map<String, DijkstraState> state;
 
     private enum DijkstraState{
         NOT_VISITED, VISITED, VISITED_AND_PROCESSED
@@ -37,11 +37,11 @@ public class Dijkstra {
         distance = new HashMap<>();
         previous = new HashMap<>();
         queue = new PriorityQueue<>(Comparator.comparingInt(distance::get));
-        color = new HashMap<>();
+        state = new HashMap<>();
         for (String u : graph.getSommets()) {
             distance.put(u, INFINITY);
             previous.put(u, null);
-            color.put(u, DijkstraState.NOT_VISITED);
+            state.put(u, DijkstraState.NOT_VISITED);
         }
     }
 
@@ -81,7 +81,7 @@ public class Dijkstra {
     private void dijkstra(String source) {
         distance.put(source, 0);
         queue.add(source);
-        color.put(source, DijkstraState.VISITED);
+        state.put(source, DijkstraState.VISITED);
         while (!queue.isEmpty()) {
             String u = queue.poll();
             for (String v : graph.getSucc(u)) {
@@ -89,15 +89,15 @@ public class Dijkstra {
                 if (distance.get(u) + w < distance.get(v)) {
                     distance.put(v, distance.get(u) + w);
                     previous.put(v, u);
-                    if (color.get(v) == DijkstraState.NOT_VISITED) {
-                        color.put(v, DijkstraState.VISITED); // Visited
+                    if (state.get(v) == DijkstraState.NOT_VISITED) {
+                        state.put(v, DijkstraState.VISITED);
                         queue.add(v);
-                    } else if (color.get(v) == DijkstraState.VISITED) {
+                    } else if (state.get(v) == DijkstraState.VISITED) {
                         decreaseKey(v);
                     }
                 }
             }
-            color.put(u, DijkstraState.VISITED_AND_PROCESSED); // Visited and processed
+            state.put(u, DijkstraState.VISITED_AND_PROCESSED); // Visited and processed
         }
     }
 }

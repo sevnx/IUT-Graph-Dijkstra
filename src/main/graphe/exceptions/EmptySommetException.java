@@ -6,7 +6,7 @@ import java.io.Serializable;
 /**
  * Exception thrown when a node is empty, but shouldn't.
  */
-public class EmptySommetException extends IllegalArgumentException implements Serializable {
+public class EmptySommetException extends IllegalArgumentException {
     @Serial
     private static final long serialVersionUID = 2L;
 

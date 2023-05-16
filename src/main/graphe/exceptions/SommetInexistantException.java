@@ -6,7 +6,7 @@ import java.io.Serializable;
 /**
  * Exception thrown when a node does not exist, and it is expected to.
  */
-public class SommetInexistantException extends IllegalArgumentException implements Serializable {
+public class SommetInexistantException extends IllegalArgumentException {
     @Serial
     private static final long serialVersionUID = 5L;
 

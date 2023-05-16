@@ -1,4 +1,4 @@
-package src.main.graphe.types;
+package src.main.graphe.implems;
 
 import src.main.graphe.core.Arc;
 import src.main.graphe.core.IGraphe;

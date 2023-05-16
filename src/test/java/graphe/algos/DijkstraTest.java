@@ -1,18 +1,16 @@
 package src.test.java.graphe.algos;
 
-import org.junit.jupiter.api.Test;
 import src.main.graphe.algos.DijkstraTools;
-import src.main.graphe.core.IGraphe;
 import src.main.graphe.ihm.CheminATrouver;
 import src.main.graphe.ihm.GraphDirectoryImporter;
 import src.main.graphe.ihm.Main;
-import src.main.graphe.types.GrapheHHAdj;
+import src.main.graphe.core.IGraphe;
+import src.main.graphe.implems.GrapheHHAdj;
+import org.junit.jupiter.api.Test;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
 
 
 // Placer les graphes a tester dans le repertoire GRAPHES_REP
@@ -40,8 +38,8 @@ class DijkstraTest {
 
         List<String> cheminTrouve = DijkstraTools.getPath(source, dest, prev);
         int distanceTrouvee = dist.getOrDefault(dest, -1);
-        if (distanceTrouvee >= 0) {
-            System.out.println("Chemin trouve : <" + String.join(", ", cheminTrouve) + ">");
+        if (distanceTrouvee >=0) {
+            System.out.println("Chemin trouve : <" + String.join(", ", cheminTrouve)+">");
             System.out.println("Distance trouvee : " + distanceTrouvee);
         } else
             System.out.println("Aucun chemin trouve !");

@@ -6,7 +6,7 @@ import java.io.Serializable;
 /**
  * Exception thrown when an arc does not exist, and it is expected to.
  */
-public class ArcInexistantException extends IllegalArgumentException implements Serializable {
+public class ArcInexistantException extends IllegalArgumentException {
     @Serial
     private static final long serialVersionUID = 4L;
 

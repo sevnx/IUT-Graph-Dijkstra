@@ -5,10 +5,10 @@ import org.junit.jupiter.api.Test;
 import src.main.graphe.core.Arc;
 import src.main.graphe.core.IGraphe;
 import src.main.graphe.ihm.GraphImporter;
-import src.main.graphe.types.GrapheHHAdj;
-import src.main.graphe.types.GrapheLAdj;
-import src.main.graphe.types.GrapheLArcs;
-import src.main.graphe.types.GrapheMAdj;
+import src.main.graphe.implems.GrapheHHAdj;
+import src.main.graphe.implems.GrapheLAdj;
+import src.main.graphe.implems.GrapheLArcs;
+import src.main.graphe.implems.GrapheMAdj;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -36,8 +36,8 @@ class IGrapheTest {
                     + "I-H(10), "
                     + "J:";
 
-    private final String g31a = ""       // arcs non tries
-            + "D-C(5), D-E(3), D-B(3), "
+    // arcs non tries
+    private final String g31a = "D-C(5), D-E(3), D-B(3), "
             + "E-G(3), E-C(1), E-H(7), "
             + "I-H(10), "
             + "J:,"

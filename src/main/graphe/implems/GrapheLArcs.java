@@ -1,4 +1,4 @@
-package src.main.graphe.types;
+package src.main.graphe.implems;
 
 import src.main.graphe.core.Arc;
 import src.main.graphe.core.IGraphe;
@@ -76,7 +76,7 @@ public class GrapheLArcs implements IGraphe {
         HashSet<String> nodes = new HashSet<>();
         for (Arc arc : arcs)
             nodes.add(arc.getSource());
-        ArrayList<String> nodesList = new ArrayList<>(nodes);
+        List<String> nodesList = new ArrayList<>(nodes);
         Collections.sort(nodesList);
         return nodesList;
     }

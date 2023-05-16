@@ -2,16 +2,17 @@ package src.main.graphe.ihm;
 
 import src.main.graphe.algos.DijkstraTools;
 import src.main.graphe.core.IGraphe;
-import src.main.graphe.types.GrapheHHAdj;
-import src.main.graphe.types.GrapheLAdj;
-import src.main.graphe.types.GrapheLArcs;
-import src.main.graphe.types.GrapheMAdj;
+import src.main.graphe.implems.GrapheHHAdj;
+import src.main.graphe.implems.GrapheLAdj;
+import src.main.graphe.implems.GrapheLArcs;
+import src.main.graphe.implems.GrapheMAdj;
 
 import java.util.HashMap;
 import java.util.Map;
 
 
-public class Main {
+public enum Main {
+    ;
     public static final String GRAPHES_REP = "graphes";
     public static final String REPONSES_REP = "reponses";
     private static final IGraphe[] prototypes = {

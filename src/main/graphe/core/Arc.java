@@ -36,7 +36,7 @@ public class Arc {
      * @throws EmptySommetException          If source or destination is empty
      */
     public Arc(String source, String destination, int valuation) {
-        if (valuation < 0)
+        if (0 > valuation)
             throw new ArcValuationNegativeException();
         if (source.isEmpty() || destination.isEmpty())
             throw new EmptySommetException();
@@ -62,7 +62,7 @@ public class Arc {
      *
      * @return Source of the arc.
      */
-    public String getSource() {
+    public final String getSource() {
         return source;
     }
 
@@ -71,7 +71,7 @@ public class Arc {
      *
      * @return Destination of the arc.
      */
-    public String getDestination() {
+    public final String getDestination() {
         return destination;
     }
 
@@ -80,7 +80,7 @@ public class Arc {
      *
      * @return Valuation of the arc.
      */
-    public int getValuation() {
+    public final int getValuation() {
         return valuation;
     }
 
@@ -99,16 +99,16 @@ public class Arc {
     /**
      * Equals method for the arc.
      *
-     * @param o Object to compare to.
+     * @param obj Object to compare to.
      * @return True if the object is an arc and has the same source and destination, false otherwise.
      */
     @Override
-    public boolean equals(Object o) {
-        if (o == null)
+    public boolean equals(Object obj) {
+        if (null == obj)
             return false;
-        if (o == this)
+        if (obj == this)
             return true;
-        if (!(o instanceof Arc arc))
+        if (!(obj instanceof Arc arc))
             return false;
         return source.equals(arc.source) && destination.equals(arc.destination);
     }

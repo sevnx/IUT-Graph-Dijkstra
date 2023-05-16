@@ -1,4 +1,4 @@
-package src.main.graphe.types;
+package src.main.graphe.implems;
 
 import src.main.graphe.core.Arc;
 import src.main.graphe.core.IGraphe;
@@ -54,7 +54,7 @@ public class GrapheHHAdj implements IGraphe {
             oterArc(source, Arc.EMPTY_EDGE_DESTINATION);
         else if (contientArc(source, destination))
             throw new ArcExistantException();
-        if (valeur < 0)
+        if (0 > valeur)
             throw new ArcValuationNegativeException();
         hhadj.get(source).put(destination, valeur);
     }

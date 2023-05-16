@@ -44,6 +44,7 @@ public interface IGraphe extends IGrapheConst {
 
     /**
      * Builds a graph from a string.
+     *
      * @param str the string to parse in format "A-B(5), A-C(10), B-C(3), C-D(8), E:"
      */
     default void peupler(String str) {
@@ -56,7 +57,7 @@ public interface IGraphe extends IGrapheConst {
             String src = elements[0].replaceAll(":", "");
             ajouterSommet(src);
 
-            if (elements.length > 1 && !elements[1].isEmpty()) {
+            if (1 < elements.length && !elements[1].isEmpty()) {
                 String[] targets = elements[1].split(",\\s*");
                 for (String target : targets) {
                     String dest = target.substring(0, target.indexOf('('));

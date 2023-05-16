@@ -6,12 +6,12 @@ import src.main.graphe.core.IGraphe;
 import java.util.List;
 
 public class CheminATrouver {
-    private String fileName;
-    private String repFileName;
-    private IGraphe g;
-    private Arc sd_arc;
-    private int distance_attendue;
-    private List<Integer> chemin_possible;
+    private final String fileName;
+    private final String repFileName;
+    private final IGraphe g;
+    private final Arc sd_arc;
+    private final int distance_attendue;
+    private final List<Integer> chemin_possible;
 
     public CheminATrouver(String fileName, String repFileName, IGraphe g,
                           Arc sd_arc, int distance_attendue,

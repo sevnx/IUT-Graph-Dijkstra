@@ -1,4 +1,4 @@
-package src.main.graphe.types;
+package src.main.graphe.implems;
 
 import src.main.graphe.core.IGraphe;
 import src.main.graphe.core.IGrapheConst;
@@ -72,7 +72,7 @@ public class GrapheMAdj implements IGraphe {
             throw new ArcExistantException();
         if (source.isEmpty() || destination.isEmpty())
             throw new EmptySommetException();
-        if (valeur < 0)
+        if (0 > valeur)
             throw new ArcValuationNegativeException();
         matrice[indices.get(source)][indices.get(destination)] = valeur;
     }
@@ -88,9 +88,9 @@ public class GrapheMAdj implements IGraphe {
 
     private void removeIndexFromMap(String noeud, int index) {
         indices.remove(noeud);
-        for (String key : indices.keySet()) {
-            if (indices.get(key) > index)
-                indices.put(key, indices.get(key) - 1);
+        for (Map.Entry<String, Integer> entry : indices.entrySet()) {
+            if (entry.getValue() > index)
+                indices.put(entry.getKey(), entry.getValue() - 1);
         }
     }
 
@@ -123,7 +123,7 @@ public class GrapheMAdj implements IGraphe {
     @Override
     public List<String> getSommets() {
         List<String> sommets = new ArrayList<>();
-        if (indices == null)
+        if (null == this.indices)
             return sommets;
         sommets.addAll(indices.keySet());
         Collections.sort(sommets);
@@ -136,8 +136,9 @@ public class GrapheMAdj implements IGraphe {
             throw new SommetInexistantException();
         List<String> succ = new ArrayList<>();
         Integer index = indices.get(sommet);
-        for (int i = 0; i < matrice.length; ++i)
-            if (matrice[index][i] != IGrapheConst.NO_EDGE)
+        int length = matrice.length;
+        for (int i = 0; i < length; ++i)
+            if (IGrapheConst.NO_EDGE != this.matrice[index][i])
                 succ.add(getKeyFromValue(i));
         Collections.sort(succ);
         return succ;
@@ -161,7 +162,7 @@ public class GrapheMAdj implements IGraphe {
     public boolean contientArc(String src, String dest) {
         if (!contientSommet(src) || !contientSommet(dest))
             return false;
-        return matrice[indices.get(src)][indices.get(dest)] != IGrapheConst.NO_EDGE;
+        return IGrapheConst.NO_EDGE != this.matrice[this.indices.get(src)][this.indices.get(dest)];
     }
 
     /**

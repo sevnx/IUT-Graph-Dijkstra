@@ -13,10 +13,10 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class GraphDirectoryImporter implements Iterable<CheminATrouver> {
-    private List<Path> fichiersGraphes;
-    private List<Path> fichiersReponses;
-    private boolean traceOn;
-    private IGraphe g;
+    private final List<Path> fichiersGraphes;
+    private final List<Path> fichiersReponses;
+    private final boolean traceOn;
+    private final IGraphe g;
 
     public GraphDirectoryImporter(String graphesRep, String reponsesRep, boolean traceOn, IGraphe g) {
         try {
@@ -73,7 +73,7 @@ public class GraphDirectoryImporter implements Iterable<CheminATrouver> {
             try {
                 distance_attendue = GraphImporter.importerReponse(rPath.toString(), cheminPossible);
             } catch (IOException e) {
-                throw new RuntimeException("Erreur lors de l'acces au fichier de reponse : " + rPath.toString());
+                throw new RuntimeException("Erreur lors de l'acces au fichier de reponse : " + rPath);
             }
             if (traceOn) {
                 System.out.println("\ngraphe: " + gPath.getFileName());
@@ -81,7 +81,7 @@ public class GraphDirectoryImporter implements Iterable<CheminATrouver> {
                 System.out.println("Graphe de  " + g.getSommets().size() + " sommets");
 
                 System.out.println("reponse: " + rPath.getFileName());
-                if (distance_attendue >= 0) {
+                if (0 <= distance_attendue) {
                     System.out.println("distance attendue : " + distance_attendue);
                     System.out.println("chemin possible : " + cheminPossible);
                 } else System.out.println("Aucun chemin attendu");

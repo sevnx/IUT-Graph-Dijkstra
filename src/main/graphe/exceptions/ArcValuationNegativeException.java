@@ -6,7 +6,7 @@ import java.io.Serializable;
 /**
  * Exception thrown when we try to add an arc with a negative valuation.
  */
-public class ArcValuationNegativeException extends IllegalArgumentException implements Serializable {
+public class ArcValuationNegativeException extends IllegalArgumentException {
     @Serial
     private static final long serialVersionUID = 1L;
 
