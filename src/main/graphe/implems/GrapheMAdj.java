@@ -8,6 +8,8 @@ import java.util.*;
 
 /**
  * Represents a graph with an adjacency matrix.
+ * Uses a vector approach to extend the matrix when it is full resulting in faster execution times.
+ * Implementation prioritizes speed over memory usage.
  *
  * @see IGraphe
  */
@@ -20,6 +22,15 @@ public class GrapheMAdj implements IGraphe {
      * Adjacency matrix representation of the graph.
      */
     private int[][] matrice;
+    /**
+     * Number of nodes in the graph.
+     */
+    private int nbNodes;
+    /**
+     * Extension of the adjacency matrix when it is full.
+     * The new size is the old size times this value.
+     */
+    private static final int EXTENSION_STEP = 2;
 
     /**
      * Default constructor of the class.
@@ -28,6 +39,7 @@ public class GrapheMAdj implements IGraphe {
     public GrapheMAdj() {
         indices = new HashMap<>();
         matrice = new int[0][0];
+        nbNodes = 0;
     }
 
     /**
@@ -44,23 +56,27 @@ public class GrapheMAdj implements IGraphe {
     @Override
     public void ajouterSommet(String noeud) {
         if (!contientSommet(noeud)) {
-            indices.put(noeud, matrice.length);
-            addSommetToMatrix();
+            indices.put(noeud, nbNodes++);
+            if (matrice.length < nbNodes)
+                extendMatrix();
         }
     }
 
-    private void addSommetToMatrix() {
-        int newSize = matrice.length + 1;
+    /**
+     * Extends the adjacency matrix by {@link #EXTENSION_STEP} times its size.
+     * Copies the old matrix into the new one.
+     * The new matrix is filled with {@link IGrapheConst#NO_EDGE} values.
+     */
+    private void extendMatrix() {
+        int newSize = matrice.length == 0 ? 1 : matrice.length * EXTENSION_STEP;
         int[][] newMatrice = new int[newSize][newSize];
+        int extensionLimit = newSize / EXTENSION_STEP;
         for (int i = 0; i < newSize; i++)
-            for (int j = 0; j < newSize; j++) {
-                if (i < newSize - 1 && j < newSize - 1)
-                    newMatrice[i][j] = matrice[i][j];
-                else
-                    newMatrice[i][j] = IGrapheConst.NO_EDGE;
-            }
+            for (int j = 0; j < newSize; j++)
+                newMatrice[i][j] = (i < extensionLimit && j < extensionLimit) ? matrice[i][j] : IGrapheConst.NO_EDGE;
         matrice = newMatrice;
     }
+
 
     @Override
     public void ajouterArc(String source, String destination, Integer valeur) {
@@ -80,36 +96,21 @@ public class GrapheMAdj implements IGraphe {
     @Override
     public void oterSommet(String noeud) {
         if (contientSommet(noeud)) {
-            int index = indices.get(noeud);
-            removeIndexFromMatrix(index);
-            removeIndexFromMap(noeud, index);
+            removeIndexFromMatrix(indices.get(noeud));
+            indices.remove(noeud);
         }
     }
 
-    private void removeIndexFromMap(String noeud, int index) {
-        indices.remove(noeud);
-        for (Map.Entry<String, Integer> entry : indices.entrySet()) {
-            if (entry.getValue() > index)
-                indices.put(entry.getKey(), entry.getValue() - 1);
-        }
-    }
-
+    /**
+     * Removes the index from the adjacency matrix.
+     * Doesn't refactor the matrix (speed over memory usage).
+     * @param index the index to remove
+     */
     private void removeIndexFromMatrix(int index) {
-        int newSize = matrice.length - 1;
-        int[][] newMatrice = new int[newSize][newSize];
-        for (int i = 0; i < newSize; i++) {
-            for (int j = 0; j < newSize; j++) {
-                if (i < index && j < index)
-                    newMatrice[i][j] = matrice[i][j];
-                else if (i < index)
-                    newMatrice[i][j] = matrice[i][j + 1];
-                else if (j < index)
-                    newMatrice[i][j] = matrice[i + 1][j];
-                else
-                    newMatrice[i][j] = matrice[i + 1][j + 1];
-            }
+        for (int i = 0; i < matrice.length; i++) {
+            matrice[i][index] = IGrapheConst.NO_EDGE;
+            matrice[index][i] = IGrapheConst.NO_EDGE;
         }
-        matrice = newMatrice;
     }
 
     @Override
@@ -135,10 +136,8 @@ public class GrapheMAdj implements IGraphe {
         if (!contientSommet(sommet))
             throw new SommetInexistantException();
         List<String> succ = new ArrayList<>();
-        Integer index = indices.get(sommet);
-        int length = matrice.length;
-        for (int i = 0; i < length; ++i)
-            if (IGrapheConst.NO_EDGE != this.matrice[index][i])
+        for (int i = 0; i < nbNodes; ++i)
+            if (IGrapheConst.NO_EDGE != this.matrice[indices.get(sommet)][i])
                 succ.add(getKeyFromValue(i));
         Collections.sort(succ);
         return succ;
