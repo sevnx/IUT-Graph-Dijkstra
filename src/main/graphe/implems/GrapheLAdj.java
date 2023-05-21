@@ -10,8 +10,6 @@ import src.main.graphe.exceptions.SommetInexistantException;
 
 import java.util.*;
 
-import static src.main.graphe.core.Arc.EMPTY_EDGE_DESTINATION;
-
 /**
  * Representation of a graph with an adjacency list.
  *
@@ -46,23 +44,21 @@ public class GrapheLAdj implements IGraphe {
 
     @Override
     public void ajouterSommet(String noeud) {
-        if (ladj.computeIfAbsent(noeud, k -> new ArrayList<>()).isEmpty())
-            ladj.put(noeud, new ArrayList<>());
+        ladj.putIfAbsent(noeud, new ArrayList<>());
     }
 
     @Override
     public void ajouterArc(String source, String destination, Integer valeur) {
         if (source.isEmpty() || destination.isEmpty())
             throw new EmptySommetException();
+        else if (contientArc(source, destination))
+            throw new ArcExistantException();
+        Arc arc = new Arc(source, destination, valeur);
         if (!contientSommet(source))
             ajouterSommet(source);
         if (!contientSommet(destination))
             ajouterSommet(destination);
-        if (contientArc(source, EMPTY_EDGE_DESTINATION))
-            oterArc(source, EMPTY_EDGE_DESTINATION);
-        else if (contientArc(source, destination))
-            throw new ArcExistantException();
-        ladj.get(source).add(new Arc(source, destination, valeur));
+        ladj.get(source).add(arc);
     }
 
     @Override

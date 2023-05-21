@@ -8,7 +8,10 @@ import java.util.List;
  * Interface for constant graphs.
  */
 public interface IGrapheConst {
-    int NO_EDGE = -1;
+    /**
+     * Represents that there is no edge between nodes
+     */
+    final int NO_EDGE = -1;
 
     /**
      * Returns the list of nodes.

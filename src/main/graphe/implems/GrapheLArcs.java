@@ -53,10 +53,10 @@ public class GrapheLArcs implements IGraphe {
     public void ajouterArc(String source, String destination, Integer valeur) {
         if (contientArc(source, EMPTY_EDGE_DESTINATION))
             oterArc(source, EMPTY_EDGE_DESTINATION);
-        if (!contientSommet(destination))
-            ajouterSommet(destination);
         else if (contientArc(source, destination))
             throw new ArcExistantException();
+        if (!contientSommet(destination))
+            ajouterSommet(destination);
         arcs.add(new Arc(source, destination, valeur));
     }
 

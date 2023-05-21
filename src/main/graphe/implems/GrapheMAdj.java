@@ -64,16 +64,16 @@ public class GrapheMAdj implements IGraphe {
 
     @Override
     public void ajouterArc(String source, String destination, Integer valeur) {
-        if (!contientSommet(source))
-            ajouterSommet(source);
-        if (!contientSommet(destination))
-            ajouterSommet(destination);
         if (contientArc(source, destination))
             throw new ArcExistantException();
         if (source.isEmpty() || destination.isEmpty())
             throw new EmptySommetException();
         if (0 > valeur)
             throw new ArcValuationNegativeException();
+        if (!contientSommet(source))
+            ajouterSommet(source);
+        if (!contientSommet(destination))
+            ajouterSommet(destination);
         matrice[indices.get(source)][indices.get(destination)] = valeur;
     }
 
@@ -173,7 +173,7 @@ public class GrapheMAdj implements IGraphe {
      */
     private String getKeyFromValue(int value) {
         for (Map.Entry<String, Integer> entry : indices.entrySet()) {
-            if (entry.getValue().equals(value)) {
+            if (entry.getValue() == (value)) {
                 return entry.getKey();
             }
         }

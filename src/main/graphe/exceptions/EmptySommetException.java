@@ -1,7 +1,6 @@
 package src.main.graphe.exceptions;
 
 import java.io.Serial;
-import java.io.Serializable;
 
 /**
  * Exception thrown when a node is empty, but shouldn't.

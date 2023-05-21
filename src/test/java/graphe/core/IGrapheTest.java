@@ -48,6 +48,51 @@ class IGrapheTest {
             + "B-G(3), "
             + "C-H(2) ";
 
+    void clear(IGraphe g) {
+        for (String s : g.getSommets()) {
+            g.oterSommet(s);
+        }
+    }
+
+    void verifErreurAjoutSommet_PasAjoutSommetSiArcInvalide(IGraphe g) {
+        clear(g);
+        try {
+            g.ajouterArc("A", "B", -1);
+        } catch (Exception ignored) {
+        }
+        assertFalse(g.contientSommet("A") && g.contientSommet("B"));
+    }
+
+    @Test
+    void testErreurAjoutSommet_PasAjoutSommetSiArcInvalide() {
+        for (IGraphe g : graphes)
+            verifErreurAjoutSommet_PasAjoutSommetSiArcInvalide(g);
+    }
+
+    void verifGrapheVide(IGraphe g) {
+        clear(g);
+        assertEquals(g.getSommets(), Collections.emptyList());
+    }
+
+    @Test
+    void testGrapheVide() {
+        for (IGraphe g : graphes)
+            verifGrapheVide(g);
+    }
+
+    void verifGrapheArcDeuxSens(IGraphe g) {
+        clear(g);
+        g.ajouterArc("A", "B", 2);
+        g.ajouterArc("B", "A", 4);
+        assertEquals(g.getValuation("A", "B"), 2);
+        assertEquals(g.getValuation("B", "A"), 4);
+    }
+
+    @Test
+    void testGrapheArcDeuxSens() {
+        for (IGraphe g : graphes)
+            verifGrapheArcDeuxSens(g);
+    }
 
     @Test
     void exo3_1Maths() {
@@ -67,7 +112,7 @@ class IGrapheTest {
         assertTrue(g.contientArc("C", "H"));
         assertFalse(g.contientArc("H", "C"));
         assertEquals(7, g.getValuation("E", "H"));
-        List<String> successeurs = new ArrayList<String>(g.getSucc("D")); // pas forcement triee
+        List<String> successeurs = new ArrayList<>(g.getSucc("D")); // pas forcement triee
         Collections.sort(successeurs);
         assertEquals(List.of("B", "C", "E"), successeurs);
         assertEquals(g31, g.toString());

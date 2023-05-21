@@ -1,7 +1,6 @@
 package src.main.graphe.exceptions;
 
 import java.io.Serial;
-import java.io.Serializable;
 
 /**
  * Exception thrown when an arc does not exist, and it is expected to.

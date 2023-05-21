@@ -1,11 +1,11 @@
 package src.main.graphe.implems;
 
-import src.main.graphe.core.Arc;
 import src.main.graphe.core.IGraphe;
 import src.main.graphe.core.IGrapheConst;
 import src.main.graphe.exceptions.*;
 
 import java.util.*;
+
 
 /**
  * Representation of a graph with a hash map of hash maps.
@@ -38,32 +38,26 @@ public class GrapheHHAdj implements IGraphe {
 
     @Override
     public void ajouterSommet(String noeud) {
-        if (!contientSommet(noeud))
-            hhadj.put(noeud, new HashMap<>());
+        hhadj.putIfAbsent(noeud, new HashMap<>());
     }
 
     @Override
     public void ajouterArc(String source, String destination, Integer valeur) {
         if (source.isEmpty() || destination.isEmpty())
             throw new EmptySommetException();
-        if (!contientSommet(source))
-            ajouterSommet(source);
-        if (!contientSommet(destination))
-            ajouterSommet(destination);
-        if (contientArc(source, Arc.EMPTY_EDGE_DESTINATION))
-            oterArc(source, Arc.EMPTY_EDGE_DESTINATION);
         else if (contientArc(source, destination))
             throw new ArcExistantException();
         if (0 > valeur)
             throw new ArcValuationNegativeException();
+        ajouterSommet(source);
+        ajouterSommet(destination);
         hhadj.get(source).put(destination, valeur);
     }
 
     @Override
     public void oterSommet(String noeud) {
         hhadj.remove(noeud);
-        for (Map<String, Integer> sommets : hhadj.values())
-            sommets.remove(noeud);
+        hhadj.values().forEach(sommets -> sommets.remove(noeud));
     }
 
     @Override

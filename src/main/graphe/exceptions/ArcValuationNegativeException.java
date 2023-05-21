@@ -1,7 +1,6 @@
 package src.main.graphe.exceptions;
 
 import java.io.Serial;
-import java.io.Serializable;
 
 /**
  * Exception thrown when we try to add an arc with a negative valuation.
